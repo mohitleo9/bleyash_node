@@ -14,6 +14,7 @@ module.exports = {
   },
   module: {
     loaders: [
+      // this is so that the html file can be reloaded on change
       {
         test: /\.html$/,
         loader: 'file-loader?name=[name].[ext]',

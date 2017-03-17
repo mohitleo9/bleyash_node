@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 
-// XXX: check what this is about?
+// this is so that the html file can be reloaded on change
 require('./index.html');
 
 console.log("msg");
