@@ -35,33 +35,42 @@ const NavBar = () => (
   </nav>
 );
 
+const SearchContainer = () =>
+<div className="row" style={{'paddingBottom': '100px', 'paddingTop': '100px'}}>
+  <Search />
+</div>;
+
 const Search = () => (
   <div className="col-lg-8 col-md-7 col-sm-6">
     <input type="text" className="col-md-4 form-control" placeholder="Search"></input>
   </div>
 );
 
+const MainButtonBar = () =>
+  <div className="row">
+    <div className="btn-group">
+      <HomeButton text="Bar" />
+      <HomeButton text="Resturant" />
+      <HomeButton text="Clubs" />
+    </div>
+  </div>;
+
 const HomeButton = ({text}) => (
   <button className="btn btn-default" type="submit">{text}</button>
 );
+
+const HelloWorld = () =>
+  <div className="row">
+    <h1>Hello, World!</h1>
+  </div>;
 
 const App = () => (
   <div>
     <NavBar />
     <div className='container'>
-      <div className="row" style={{'paddingBottom': '100px', 'paddingTop': '100px'}}>
-        <Search />
-      </div>
-      <div className="row">
-        <h1>Hello, World!</h1>
-      </div>
-      <div className="row">
-        <div className="btn-group">
-          <HomeButton text="Bar" />
-          <HomeButton text="Resturant" />
-          <HomeButton text="Clubs" />
-        </div>
-      </div>
+      <SearchContainer />
+      <HelloWorld />
+      <MainButtonBar />
     </div>
   </div>
 );
