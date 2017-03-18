@@ -48,15 +48,15 @@ const Search = () => (
 
 const MainButtonBar = () =>
   <div className="row">
-    <div className="btn-group">
-      <HomeButton text="Bar" />
-      <HomeButton text="Resturant" />
+    <div className="btn-group btn-group-justified">
+      <HomeButton text="Bars" />
+      <HomeButton text="Resturants" />
       <HomeButton text="Clubs" />
     </div>
   </div>;
 
 const HomeButton = ({text}) => (
-  <button className="btn btn-default" type="submit">{text}</button>
+  <a className="btn btn-default" type="submit">{text}</a>
 );
 
 const HelloWorld = () =>
