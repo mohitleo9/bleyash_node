@@ -12,6 +12,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx']
   },
+  devtool: 'source-map',
   module: {
     loaders: [
       // this is so that the html file can be reloaded on change
