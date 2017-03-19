@@ -10,13 +10,14 @@ import PlacesPage from './PlacesPage';
 import NavBar from './NavBar';
 
 
-const App = (props) => (
+const App = (props) =>{
+  return (
   <div>
-    <NavBar />
+    <Route path="/" component={NavBar}/>
     <Route exact={true} path="/" component={HomePage}/>
-    <Route path="/t/" component={PlacesPage}/>
+    <Route path="/t/:type" component={PlacesPage}/>
   </div>
-);
+)};
 
 
 export default App;

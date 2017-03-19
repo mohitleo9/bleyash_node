@@ -1,15 +1,6 @@
 import React from 'react';
+import {SearchContainer} from './Search';
 
-const SearchContainer = () =>
-<div className="row" style={{'paddingBottom': '100px', 'paddingTop': '100px'}}>
-  <Search />
-</div>;
-
-const Search = () => (
-  <div className="col-lg-8 col-md-7 col-sm-6">
-    <input type="text" className="col-md-4 form-control" placeholder="Search"></input>
-  </div>
-);
 
 const MainButtonBar = () =>
   <div className="row">
@@ -24,16 +15,19 @@ const HomeButton = ({text}) => (
   <a className="btn btn-default" type="submit">{text}</a>
 );
 
-const HelloWorld = () =>
+const HelloWorld = ({text}) =>
   <div className="row">
-    <h1>Places Page</h1>
+    <h1>{text || 'Places Page'}</h1>
   </div>;
 
-const HomePage = () =>
+const PlacesPage = ({match}) =>{
+  return (
   <div className='container'>
     <SearchContainer />
-    <HelloWorld />
+    <HelloWorld text={match.params.type}/>
     <MainButtonBar />
-  </div>;
+  </div>
+  );
+  }
 
-export default HomePage;
+export default PlacesPage;

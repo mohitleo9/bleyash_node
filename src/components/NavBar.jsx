@@ -1,6 +1,9 @@
 import React from 'react';
+import {NavLink} from 'react-router-dom';
+import {Search} from './Search';
 
-const NavBar = () => (
+const NavBar = (props, d, k) => {
+  return (
   <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div className="container">
       <div className="navbar-header">
@@ -12,6 +15,7 @@ const NavBar = () => (
         </button>
         <a className="navbar-brand" href="#">BLEYASH</a>
       </div>
+      {!props.match.isExact && <Search />}
       <div className="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
         <button type="button" className="btn btn-default navbar-btn">Sign in</button>
         <ul className="nav navbar-nav">
@@ -28,6 +32,6 @@ const NavBar = () => (
       </div>
     </div>
   </nav>
-);
+  )};
 
 export default NavBar;
