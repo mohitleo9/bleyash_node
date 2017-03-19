@@ -5,73 +5,14 @@ import {
   Link
 } from 'react-router-dom';
 
-const NavBar = () => (
-  <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div className="container">
-      <div className="navbar-header">
-        <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-          <span className="sr-only">Toggle navigation</span>
-          <span className="icon-bar"></span>
-          <span className="icon-bar"></span>
-          <span className="icon-bar"></span>
-        </button>
-        <a className="navbar-brand" href="#">BLEYASH</a>
-      </div>
-      <div className="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
-        <button type="button" className="btn btn-default navbar-btn">Sign in</button>
-        <ul className="nav navbar-nav">
-          <li>
-            <a href="#">About</a>
-          </li>
-          <li>
-            <a href="#">Services</a>
-          </li>
-          <li>
-            <a href="#">Contact</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-);
+import NavBar from './Navbar';
+import HomePage from './HomePage';
 
-const SearchContainer = () =>
-<div className="row" style={{'paddingBottom': '100px', 'paddingTop': '100px'}}>
-  <Search />
-</div>;
-
-const Search = () => (
-  <div className="col-lg-8 col-md-7 col-sm-6">
-    <input type="text" className="col-md-4 form-control" placeholder="Search"></input>
-  </div>
-);
-
-const MainButtonBar = () =>
-  <div className="row">
-    <div className="btn-group btn-group-justified">
-      <HomeButton text="Bars" />
-      <HomeButton text="Resturants" />
-      <HomeButton text="Clubs" />
-    </div>
-  </div>;
-
-const HomeButton = ({text}) => (
-  <a className="btn btn-default" type="submit">{text}</a>
-);
-
-const HelloWorld = () =>
-  <div className="row">
-    <h1>Hello, World!</h1>
-  </div>;
 
 const App = () => (
   <div>
     <NavBar />
-    <div className='container'>
-      <SearchContainer />
-      <HelloWorld />
-      <MainButtonBar />
-    </div>
+    <HomePage />
   </div>
 );
 
