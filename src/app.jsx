@@ -10,6 +10,7 @@ require('./index.html');
 const container = document.querySelector('#app-container');
 
 //Render
+// maybe move Router in App??
 ReactDOM.render(
   <Router>
     <App />
