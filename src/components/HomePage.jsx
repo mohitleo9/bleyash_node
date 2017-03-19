@@ -1,28 +1,15 @@
 import React from 'react';
-
-const SearchContainer = () =>
-<div className="row" style={{'paddingBottom': '100px', 'paddingTop': '100px'}}>
-  <Search />
-</div>;
-
-const Search = () => (
-  <div className="col-lg-8 col-md-7 col-sm-6">
-    <input type="text" className="col-md-4 form-control" placeholder="Search"></input>
-  </div>
-);
+import {SearchContainer} from './Search';
+import {Link} from 'react-router-dom';
 
 const MainButtonBar = () =>
   <div className="row">
     <div className="btn-group btn-group-justified">
-      <HomeButton text="Bars" />
-      <HomeButton text="Resturants" />
-      <HomeButton text="Clubs" />
+      <Link to="/t/bars/" className="btn btn-default">Bars</Link>
+      <Link to="/t/resturants" className="btn btn-default">Resturants</Link>
+      <Link to="/t/clubs" className="btn btn-default">Clubs</Link>
     </div>
   </div>;
-
-const HomeButton = ({text}) => (
-  <a className="btn btn-default" type="submit">{text}</a>
-);
 
 const HelloWorld = () =>
   <div className="row">
