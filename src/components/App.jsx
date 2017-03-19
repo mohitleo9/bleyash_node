@@ -5,14 +5,14 @@ import {
   Link
 } from 'react-router-dom';
 
-import NavBar from './NavBar';
 import HomePage from './HomePage';
 import PlacesPage from './PlacesPage';
+import NavBar from './NavBar';
 
 
-const App = () => (
+const App = (props) => (
   <div>
-    <Route path="/" component={NavBar}/>
+    <NavBar />
     <Route exact={true} path="/" component={HomePage}/>
     <Route path="/t/" component={PlacesPage}/>
   </div>
