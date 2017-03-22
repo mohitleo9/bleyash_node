@@ -3,10 +3,10 @@ const path = require('path');
 
 module.exports = {
   entry: [
-    './src/app.jsx',
+    './app/client/app.jsx',
   ],
   output: {
-    path: path.resolve(__dirname, './build'),
+    path: path.resolve(__dirname, './app/build/static'),
     filename: 'app.bundle.js',
   },
   resolve: {
