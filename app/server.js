@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require('path');
 
+const debug = true;
 const app = express();
 // logger.. dev means log to console
 app.use(logger('dev'));
@@ -15,6 +16,7 @@ var port = process.env.PORT || 8080;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// Middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -26,7 +28,23 @@ app.use(session({
   saveUninitialized: true,
 }));
 // static files
-app.use(express.static(path.join(__dirname + '/build')));
+if (debug){
+  // dev deps
+  const webpackConfig = require('../webpack.config.js');
+  const webpack = require('webpack');
+  const webpackDevMiddleware = require('webpack-dev-middleware');
+
+  const compiler = webpack(webpackConfig);
+  app.use(webpackDevMiddleware(compiler, {
+    hot: true,
+    publicPath: `http://localhost:${port}/static/`,
+    stats: {colors: true}
+  }));
+  app.use(require('webpack-hot-middleware')(compiler));
+}
+else {
+  app.use(express.static(path.join(__dirname + '/build')));
+}
 
 // spa app so whatever!
 app.get('/', (req, res) =>{

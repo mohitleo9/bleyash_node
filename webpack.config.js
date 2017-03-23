@@ -2,7 +2,9 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
+  // the first one is dev onli entry
   entry: [
+    'webpack-hot-middleware/client?reload=true',
     './app/client/app.jsx',
   ],
   output: {
@@ -28,6 +30,8 @@ module.exports = {
     ],
   },
   plugins: [
+    // dev only
+    new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
   ],
 };
