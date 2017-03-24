@@ -1,9 +1,11 @@
 const express = require('express');
+var mongoose   = require('mongoose');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require('path');
+const restApi = require('./routes/rest-api');
 
 const debug = true;
 const app = express();
@@ -15,6 +17,11 @@ var port = process.env.PORT || 8080;
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+// db
+mongoose.connect('mongodb://localhost/test');
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
 
 // Middlewares
 app.use(bodyParser.json());
@@ -37,6 +44,7 @@ if (debug){
   const compiler = webpack(webpackConfig);
   app.use(webpackDevMiddleware(compiler, {
     hot: true,
+    quiet: true,
     publicPath: `http://localhost:${port}/static/`,
     stats: {colors: true}
   }));
@@ -46,7 +54,8 @@ else {
   app.use(express.static(path.join(__dirname + '/build')));
 }
 
-// spa app so whatever!
+// routes
+app.use('/api/', restApi);
 app.get('/', (req, res) =>{
   res.render('index');
 })
@@ -66,7 +75,8 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.send('error' + JSON.stringify(err));
+  console.error(err);
+  res.status(500).json({error: err.message});
 });
 
 app.listen(port);
