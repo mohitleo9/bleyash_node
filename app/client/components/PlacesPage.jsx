@@ -19,20 +19,20 @@ const HelloWorld = ({text}) =>
     <h1>{text || 'Places Page'}</h1>
   </div>;
 
-const Place = ({name}) =>
+const Place = ({name, address, description}) =>
   <div style={{paddingBottom: '30px'}} className="row">
     <img src="http://esq.h-cdn.co/assets/cm/15/06/54d3cdbba4f40_-_esq-01-bar-lgn.jpg" className="img-rounded col-md-4" width="304" height="236" />
     <div>
       <h3> {name} </h3>
-      <div><h2>asdfasdf</h2></div>
-      <div>mangostreet Serbia</div>
+      <div><h2>{description}</h2></div>
+      <div>{address}</div>
     </div>
   </div>;
 
 const Places = ({places}) =>
   <div className="container">
     {places.map((place, i) =>
-      <Place name={place.name} address={place.address} key={i} />
+      <Place name={place.name} address={place.address} description={place.description} key={i} />
     )}
   </div>;
 

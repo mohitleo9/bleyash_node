@@ -3,7 +3,7 @@ const Schema       = mongoose.Schema;
 
 const PlaceSchema   = new Schema({
     name: String,
-    Address: String,
+    address: String,
     description: String
 });
 
