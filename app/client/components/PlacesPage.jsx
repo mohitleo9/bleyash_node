@@ -1,5 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {NavLink} from 'react-router-dom';
+import store from '../store';
+import {getPlaces} from '../actions/places';
 
 
 const MainButtonBar = () =>
@@ -26,21 +29,30 @@ const Place = ({name}) =>
     </div>
   </div>;
 
-const Places = () =>
+const Places = ({places}) =>
   <div className="container">
-    <Place name="bar1" />
-    <Place name="bar2" />
-    <Place name="bar3" />
+    {places.map((place, i) =>
+      <Place name={place.name} address={place.address} key={i} />
+    )}
   </div>;
 
+const mapStateToPropsForPlaces = (state) => {
+  return {
+    places: state.places.list
+  };
+};
+
+const PlacesContainer = connect(mapStateToPropsForPlaces)(Places);
+
 const PlacesPage = ({match}) =>{
+  store.dispatch(getPlaces());
   return (
   <div className='container'>
     <HelloWorld text={match.params.type}/>
     <MainButtonBar  />
-    <Places />
+    <PlacesContainer />
   </div>
   );
-  }
+  };
 
 export default PlacesPage;

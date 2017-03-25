@@ -44,7 +44,7 @@ if (debug){
   const compiler = webpack(webpackConfig);
   app.use(webpackDevMiddleware(compiler, {
     hot: true,
-    quiet: true,
+    quiet: false,
     publicPath: `http://localhost:${port}/static/`,
     stats: {colors: true}
   }));
@@ -58,7 +58,7 @@ else {
 app.use('/api/', restApi);
 app.get('/', (req, res) =>{
   res.render('index');
-})
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -76,7 +76,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   console.error(err);
-  res.status(500).json({error: err.message});
+  res.json({error: err.message});
 });
 
 app.listen(port);
