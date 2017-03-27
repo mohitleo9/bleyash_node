@@ -44,15 +44,19 @@ const mapStateToPropsForPlaces = (state) => {
 
 const PlacesContainer = connect(mapStateToPropsForPlaces)(Places);
 
-const PlacesPage = ({match}) =>{
-  store.dispatch(getPlaces());
-  return (
-  <div className='container'>
-    <HelloWorld text={match.params.type}/>
-    <MainButtonBar  />
-    <PlacesContainer />
-  </div>
-  );
-  };
+class PlacesPage extends React.Component{
+  componentWillMount(){
+    store.dispatch(getPlaces());
+  }
+  render() {
+    return (
+      <div className='container'>
+        <HelloWorld text={this.props.match.params.type}/>
+        <MainButtonBar  />
+        <PlacesContainer />
+      </div>
+    );
+  }
+};
 
 export default PlacesPage;
