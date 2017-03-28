@@ -19,5 +19,5 @@ switch (NODE_ENV) {
 let defaultBuffer = fs.readFileSync(path.resolve(__dirname, 'default.json'), 'utf-8');
 let defaultConfig = JSON.parse(defaultBuffer);
 let envConfig =  JSON.parse(configBuffer);
-let config = Object.assign({}, defaultConfig, envConfig);
+let config = Object.assign({}, defaultConfig, envConfig, process.env);
 module.exports = config;

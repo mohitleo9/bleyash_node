@@ -10,7 +10,7 @@ const path = require('path');
 const restApi = require('./routes/rest-api');
 const config = require('./config');
 
-const debug = config.debug;
+const debug = config.DEBUG;
 const app = express();
 // logger.. dev means log to console
 app.use(logger('dev'));
@@ -22,7 +22,7 @@ app.set('view engine', 'ejs');
 // db
 // mongoose promise is depricated
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongodb.uri);
+mongoose.connect(config.MONGODB_URI);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
@@ -34,7 +34,7 @@ app.use(cookieParser());
 
 // session
 let store = new MongoDBStore({
-  uri: config.mongodb.uri,
+  uri: config.MONGODB_URI,
   collection: 'session'
 });
 store.on('error', function(error) {
@@ -42,8 +42,8 @@ store.on('error', function(error) {
   assert.ok(false);
 });
 app.use(session({
-  secret: config.session.secret,
-  key: config.session.key,
+  secret: config.SESSION_SECRET,
+  key: config.SESSION_KEY,
   store,
   resave: false,
   saveUninitialized: true,
@@ -59,7 +59,7 @@ if (debug){
   app.use(webpackDevMiddleware(compiler, {
     hot: true,
     quiet: false,
-    publicPath: `http://localhost:${config.server.port}/static/`,
+    publicPath: `http://localhost:${config.SERVER_PORT}/static/`,
     stats: {colors: true}
   }));
   app.use(require('webpack-hot-middleware')(compiler));

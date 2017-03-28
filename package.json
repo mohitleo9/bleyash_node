@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": "v7.7.3"
+    "node": "v7.7.3",
+    "npm": "4.4.1"
   },
   "scripts": {
     "build": "NODE_ENV='production' webpack",

@@ -1,13 +1,7 @@
 {
-  "server": {
-    "port": "8080"
-  },
-  "mongodb": {
-    "uri": "mongodb://localhost/test"
-  },
-  "session": {
-    "secret": "$#%!@#@@#caddmiumSSDASASDVV@@@@",
-    "key": "sid"
-  },
-  "debug": true
+  "SERVER_PORT": "8080",
+  "MONGODB_URI": "mongodb://localhost/test",
+  "SESSION_SECRET": "$#%!@#@@#caddmiumSSDASASDVV@@@@",
+  "SESSION_KEY": "sid",
+  "DEBUG": true
 }

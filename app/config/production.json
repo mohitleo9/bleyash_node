@@ -1,6 +1,4 @@
 {
-  "server": {
-    "port": 8080
-  },
-  "debug": false
+  "DEBUG": false,
+  "SERVER_PORT": 80
 }
