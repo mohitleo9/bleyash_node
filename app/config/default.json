@@ -1,0 +1,13 @@
+{
+  "server": {
+    "port": "8080"
+  },
+  "mongodb": {
+    "address": "mongodb://localhost/test"
+  },
+  "session": {
+    "secret": "$#%!@#@@#caddmiumSSDASASDVV@@@@",
+    "key": "sid"
+  },
+  "debug": true
+}

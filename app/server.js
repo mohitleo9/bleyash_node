@@ -6,13 +6,12 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require('path');
 const restApi = require('./routes/rest-api');
+const config = require('./config');
 
-const debug = true;
+const debug = config.debug;
 const app = express();
 // logger.. dev means log to console
 app.use(logger('dev'));
-// config haha
-var port = process.env.PORT || 8080;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,7 +20,7 @@ app.set('view engine', 'ejs');
 // db
 // mongoose promise is depricated
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect(config.mongodb.address);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
@@ -31,8 +30,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 // XXX
 app.use(session({
-  secret: '$#%!@#@@#caddmiumSSDASASDVV@@@@',
-  key: 'sid',
+  secret: config.session.secret,
+  key: config.session.key,
   resave: false,
   saveUninitialized: true,
 }));
@@ -47,7 +46,7 @@ if (debug){
   app.use(webpackDevMiddleware(compiler, {
     hot: true,
     quiet: false,
-    publicPath: `http://localhost:${port}/static/`,
+    publicPath: `http://localhost:${config.server.port}/static/`,
     stats: {colors: true}
   }));
   app.use(require('webpack-hot-middleware')(compiler));
@@ -81,4 +80,4 @@ app.use(function(err, req, res, next) {
   res.json({error: err.message});
 });
 
-app.listen(port);
+module.exports = app;

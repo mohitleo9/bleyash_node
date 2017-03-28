@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "serve": "nodemon app/server.js",
-    "debug": "node --debug app/server.js",
-    "inspect": "node --inspect --debug-brk app/server.js"
+    "serve": "NODE_ENV='development' nodemon app/www.js",
+    "debug": "NODE_ENV='development' node --debug app/www.js",
+    "inspect": "NODE_ENV='development' node --inspect --debug-brk app/www.js"
   },
   "keywords": [],
   "author": "",
