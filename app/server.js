@@ -3,6 +3,7 @@ var mongoose   = require('mongoose');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const methodOverride = require('method-override');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const path = require('path');
@@ -27,6 +28,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 // Middlewares
 app.use(bodyParser.json());
+app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
