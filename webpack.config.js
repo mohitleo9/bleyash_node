@@ -1,11 +1,11 @@
 const webpack = require('webpack');
+const merge = require('webpack-merge');
 const path = require('path');
 
-module.exports = {
+let common = {
   // the first one is dev onli entry
   entry: [
     'babel-polyfill',
-    'webpack-hot-middleware/client?reload=true',
     './app/client/app.jsx',
   ],
   output: {
@@ -32,7 +32,29 @@ module.exports = {
   },
   plugins: [
     // dev only
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
   ],
 };
+
+let config;
+
+switch(process.env.NODE_ENV) {
+  case 'production':
+    config = common;
+    break;
+
+  case 'development':
+    config = merge(
+      common,
+      {
+        entry: ['webpack-hot-middleware/client?reload=true'],
+        devtool: 'eval-source-map',
+        plugins: [
+          new webpack.HotModuleReplacementPlugin(),
+        ],
+      }
+    );
+    break;
+}
+
+module.exports = config;

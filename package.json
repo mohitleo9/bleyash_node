@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "NODE_ENV='production' webpack",
     "serve": "NODE_ENV='development' nodemon app/www.js",
     "debug": "NODE_ENV='development' node --debug app/www.js",
     "inspect": "NODE_ENV='development' node --inspect --debug-brk app/www.js"
@@ -30,7 +30,8 @@
     "react-router-dom": "^4.0.0",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
-    "slugify": "^1.1.0"
+    "slugify": "^1.1.0",
+    "webpack-merge": "^4.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.0",
