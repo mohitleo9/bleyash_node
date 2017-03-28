@@ -59,7 +59,7 @@ if (debug){
   app.use(webpackDevMiddleware(compiler, {
     hot: true,
     quiet: false,
-    publicPath: `http://localhost:${config.SERVER_PORT}/static/`,
+    publicPath: `http://localhost:${config.PORT}/static/`,
     stats: {colors: true}
   }));
   app.use(require('webpack-hot-middleware')(compiler));
