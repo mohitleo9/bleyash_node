@@ -3,7 +3,7 @@
     "port": "8080"
   },
   "mongodb": {
-    "address": "mongodb://localhost/test"
+    "uri": "mongodb://localhost/test"
   },
   "session": {
     "secret": "$#%!@#@@#caddmiumSSDASASDVV@@@@",

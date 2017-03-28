@@ -4,6 +4,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 const path = require('path');
 const restApi = require('./routes/rest-api');
 const config = require('./config');
@@ -20,7 +21,7 @@ app.set('view engine', 'ejs');
 // db
 // mongoose promise is depricated
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongodb.address);
+mongoose.connect(config.mongodb.uri);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
@@ -28,10 +29,20 @@ db.on('error', console.error.bind(console, 'connection error:'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-// XXX
+
+// session
+let store = new MongoDBStore({
+  uri: config.mongodb.uri,
+  collection: 'session'
+});
+store.on('error', function(error) {
+  assert.ifError(error);
+  assert.ok(false);
+});
 app.use(session({
   secret: config.session.secret,
   key: config.session.key,
+  store,
   resave: false,
   saveUninitialized: true,
 }));

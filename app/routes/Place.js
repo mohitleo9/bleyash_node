@@ -14,8 +14,6 @@ const getPlaces = (req, res) => {
   });
 };
 const getPlace = (req, res, next)=> {
-  console.log('asdfasdf');
-  console.log(req.params);
   Place.find({'slug': req.params.slug}, PUBLIC_FIELDS, (err, place) =>{
     if (err) {
       return next(err);
