@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {NavLink} from 'react-router-dom';
+import {NavLink, Link} from 'react-router-dom';
 import store from '../store';
 import {getPlaces} from '../actions/places';
 
@@ -19,9 +19,11 @@ const HelloWorld = ({text}) =>
     <h1>{text || 'Places Page'}</h1>
   </div>;
 
-const Place = ({name, address, description}) =>
+const Place = ({name, address, slug, description}) =>
   <div style={{paddingBottom: '30px'}} className="row">
-    <img src="http://esq.h-cdn.co/assets/cm/15/06/54d3cdbba4f40_-_esq-01-bar-lgn.jpg" className="img-rounded col-md-4" width="304" height="236" />
+    <Link to={`/p/${slug}`}>
+      <img src="http://esq.h-cdn.co/assets/cm/15/06/54d3cdbba4f40_-_esq-01-bar-lgn.jpg" className="img-rounded col-md-4" width="304" height="236" />
+    </Link>
     <div>
       <h3> {name} </h3>
       <div><h2>{description}</h2></div>
@@ -32,7 +34,7 @@ const Place = ({name, address, description}) =>
 const Places = ({places}) =>
   <div className="container">
     {places.map((place, i) =>
-      <Place name={place.name} address={place.address} description={place.description} key={i} />
+      <Place name={place.name} slug={place.slug} address={place.address} description={place.description} key={i} />
     )}
   </div>;
 

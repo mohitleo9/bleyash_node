@@ -7,10 +7,10 @@ routes.get('/', (req, res) => {
 
 routes.route('/places')
   .get(getPlaces)
-  .post(postPlace)
+  .post(postPlace);
 
-routes.route('/places/:id')
+routes.route('/places/:slug')
   .get(getPlace)
-  .delete(deletePlace)
+  .delete(deletePlace);
 
 module.exports = routes;
