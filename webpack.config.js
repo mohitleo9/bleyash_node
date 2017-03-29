@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 let common = {
   // the first one is dev onli entry
@@ -43,7 +44,6 @@ let common = {
     ],
       },
   plugins: [
-    // dev only
     new webpack.NamedModulesPlugin(),
   ],
 };
@@ -52,7 +52,14 @@ let config;
 
 switch(process.env.NODE_ENV) {
   case 'production':
-    config = common;
+    config = merge(
+      common,
+      {
+        plugins: [
+          new UglifyJSPlugin,
+        ]
+      }
+    );
     break;
 
   case 'development':
