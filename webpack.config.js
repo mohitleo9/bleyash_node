@@ -24,12 +24,24 @@ let common = {
         loader: 'file-loader?name=[name].[ext]',
       },
       {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
+        test: /\.css$/,
+        loader: 'style-loader'
+      },
+      {
+        test: /\.css$/,
+        loader: 'css-loader',
+        // query: {
+        //   modules: true,
+        //   localIdentName: '[name]__[local]___[hash:base64:5]'
+        // },
+      },
+      {
+          test: /\.jsx?$/,
+          exclude: /node_modules/,
+          loader: 'babel-loader',
       },
     ],
-  },
+      },
   plugins: [
     // dev only
     new webpack.NamedModulesPlugin(),
