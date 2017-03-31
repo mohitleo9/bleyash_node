@@ -67,7 +67,7 @@ switch(process.env.NODE_ENV) {
       common,
       {
         entry: ['webpack-hot-middleware/client?reload=true'],
-        devtool: 'eval-source-map',
+        devtool: 'source-map',
         plugins: [
           new webpack.HotModuleReplacementPlugin(),
         ],

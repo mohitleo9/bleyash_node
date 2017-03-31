@@ -28,10 +28,14 @@ const NavBar = (props, d, k) => {
           <li>
             <a href="#">Contact</a>
           </li>
+          <li>
+            <NavLink to="/add/place">Add place</NavLink>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
-  )};
+  );
+};
 
 export default NavBar;
