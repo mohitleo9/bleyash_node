@@ -1,14 +1,19 @@
-import fetch from 'isomorphic-fetch';
+import axios from 'axios';
 import {API_URL} from '../constants';
 
 
-const getPlaces = () => {
+const getPlaces = (type) => {
   return (dispatch) => {
-    return fetch(`${API_URL}/places`)
-      .then((response) => response.json())
-      .then((json) =>
-        dispatch(getPlacesSuccess(json))
-      );
+    return axios.get(`${API_URL}/places`,
+      {
+        params: {
+          type
+        }
+      }
+    )
+      .then((res) => {
+        dispatch(getPlacesSuccess(res.data));
+      });
   };
 };
 

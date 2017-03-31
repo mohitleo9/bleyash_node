@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {NavLink, Link} from 'react-router-dom';
 import store from '../store';
 import {getPlaces} from '../actions/places';
+import {URLS_TO_PLACE_TYPES} from '../constants';
 
 
 const MainButtonBar = () =>
@@ -48,12 +49,18 @@ const PlacesContainer = connect(mapStateToPropsForPlaces)(Places);
 
 class PlacesPage extends React.Component{
   componentWillMount(){
-    store.dispatch(getPlaces());
+    store.dispatch(getPlaces(this.getType(this.props.match.params.typeUrl)));
+  }
+  getType (typeUrl){
+    return URLS_TO_PLACE_TYPES[typeUrl];
+  }
+  componentWillReceiveProps({match}){
+    store.dispatch(getPlaces(this.getType(match.params.typeUrl)));
   }
   render() {
     return (
       <div className='container'>
-        <HelloWorld text={this.props.match.params.type}/>
+        <HelloWorld text={this.props.match.params.typeUrl}/>
         <MainButtonBar  />
         <PlacesContainer />
       </div>

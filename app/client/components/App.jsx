@@ -17,7 +17,7 @@ const App = (props) =>{
     <div>
       <Route path="/" component={NavBar}/>
       <Route exact={true} path="/" component={HomePage}/>
-      <Route path="/t/:type" component={PlacesPage}/>
+      <Route path="/t/:typeUrl" component={PlacesPage}/>
       <Route path="/p/:slug" component={PlacePage}/>
       <Route path="/add/place" component={AddPlacePage}/>
     </div>

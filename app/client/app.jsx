@@ -4,7 +4,6 @@ import App from './components/App';
 import { HashRouter as Router} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import store from './store';
-import {getPlaces} from './actions/places';
 
 // this is so that the html file can be reloaded on change
 // require('./index.ejs');

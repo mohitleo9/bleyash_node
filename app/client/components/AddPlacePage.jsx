@@ -1,9 +1,9 @@
 import React from 'react';
 import FieldGroup from './FieldGroup';
 import styles from '../css/AddPlacePage.css';
-import {Button} from 'react-bootstrap';
+import {Button, FormGroup, FormControl} from 'react-bootstrap';
 import axios from 'axios';
-import {API_URL} from '../constants';
+import {API_URL, PLACE_TYPES, PLACE_TYPES_TO_URLS} from '../constants';
 import {withRouter} from 'react-router-dom';
 
 class AddPlaceForm extends React.Component {
@@ -12,14 +12,21 @@ class AddPlaceForm extends React.Component {
     this.state = {
       name: '',
       address: '',
-      description: ''
+      description: '',
+      type: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
     this.submit = this.submit.bind(this);
   }
   handleChange(fieldName){
     return (event) =>{
       // computed value !
+      this.setState({[fieldName]: event.target.value});
+    };
+  }
+  handleSelect(fieldName){
+    return (event) =>{
       this.setState({[fieldName]: event.target.value});
     };
   }
@@ -30,14 +37,15 @@ class AddPlaceForm extends React.Component {
         name: this.state.name,
         address: this.state.address,
         description: this.state.description,
+        type: this.state.type,
       }
     )
       .then(()=>{
-        console.log('logging');
-        this.props.history.push('/t/bars');
+        this.props.history.push(`/t/${PLACE_TYPES_TO_URLS[this.state.type]}`);
       });
   }
   render(){
+    const types = Object.values(PLACE_TYPES);
     return (
       <form onSubmit={this.submit}>
         <div className="row">
@@ -59,6 +67,12 @@ class AddPlaceForm extends React.Component {
         <div className="row">
           <FieldGroup className="col-lg-6" id='place-description' bsSize="lg" type='text' value={this.state.description} onChange={this.handleChange('description')} placeholder='* description' />
         </div>
+        <FormGroup controlId="formControlsSelect">
+          <FormControl value={this.state.value} onChange={this.handleSelect('type')} componentClass="select" placeholder="Type">
+            <option value="">Select Type</option>
+            {types.map((type) => <option key={type} value={type}>{type.toUpperCase()}</option>)}
+          </FormControl>
+        </FormGroup>
       </form>
     );
   }
