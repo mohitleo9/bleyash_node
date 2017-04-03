@@ -10,15 +10,32 @@ import {withRouter} from 'react-router-dom';
 import lodash from 'lodash';
 
 class AddressForm extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      countries: []
+    };
+  }
+  componentWillMount(){
+    axios.get(`${API_URL}/countries`)
+      .then((res)=>{
+        const options = res.data.countries.map((country) => {
+          return {label: country.name, value: country.code};
+        });
+        this.setState({countries: options});
+      });
+  }
   render(){
+    const {handleAddress, address} = this.props;
+
     return (
       <div>
-        <FieldGroup className="col-lg-6" id='address-1' bsSize="lg" type='text' placeholder='* Address Line 1' />
-        <FieldGroup className="col-lg-6" id='address-2' bsSize="lg" type='text' placeholder='Address Line 2' />
-        <FieldGroup className="col-lg-6" id='city' bsSize="lg" type='text' placeholder='* City' />
-        <FieldGroup className="col-lg-6" id='state' bsSize="lg" type='text' placeholder='* State' />
-        <FieldGroup className="col-lg-6" id='zipcode' bsSize="lg" type='text' placeholder='* Zipcode' />
-        <FieldGroup className="col-lg-6" id='country' bsSize="lg" type='text' placeholder='* Country' />
+        <FieldGroup value={address.address1} onChange={handleAddress("address1")} className="col-lg-6" id='address-1' bsSize="lg" type='text' placeholder='* Address Line 1' />
+        <FieldGroup value={address.address2} onChange={handleAddress("address2")} className="col-lg-6" id='address-2' bsSize="lg" type='text' placeholder='Address Line 2' />
+        <FieldGroup value={address.city} onChange={handleAddress("city")} className="col-lg-6" id='city' bsSize="lg" type='text' placeholder='* City' />
+        <FieldGroup value={address.state} onChange={handleAddress("state")} className="col-lg-6" id='state' bsSize="lg" type='text' placeholder='* State' />
+        <FieldGroup value={address.zipcode} onChange={handleAddress("zipcode")} className="col-lg-6" id='zipcode' bsSize="lg" type='text' placeholder='* Zipcode' />
+        <Select placeholder="country" value={address.country} options={this.state.countries} onChange={handleAddress('country')} />
       </div>
     );
   }
@@ -29,13 +46,21 @@ class AddPlaceForm extends React.Component {
     super(props);
     this.state = {
       name: '',
-      address: '',
+      address: {
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        zipcode: '',
+        country: ''
+      },
       description: '',
       type: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleName = this.handleName.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
+    this.handleAddress = this.handleAddress.bind(this);
     this.handleMapQuery = this.handleMapQuery.bind(this);
     this.submit = this.submit.bind(this);
     this.autoCompleteService = new window.google.maps.places.AutocompleteService;
@@ -44,6 +69,13 @@ class AddPlaceForm extends React.Component {
     return (event) =>{
       // computed value !
       this.setState({[fieldName]: event.target.value});
+    };
+  }
+  handleAddress(fieldName){
+    return (event) =>{
+      let address = {...this.state.address};
+      address[fieldName]= event.target ? event.target.value :event.value;
+      this.setState({address});
     };
   }
   handleSelect(fieldName){
@@ -116,7 +148,7 @@ class AddPlaceForm extends React.Component {
           <Select.Async name="form-field-name" value={this.state.name} onChange={this.handleName} loadOptions={lodash.debounce(this.handleMapQuery, 300)} />
         </div>
         <div className="row">
-          <AddressForm />
+          <AddressForm handleAddress={this.handleAddress} address={this.state.address}/>
         </div>
         <div className="row">
           <FieldGroup className="col-lg-6" id='place-description' bsSize="lg" type='text' value={this.state.description} onChange={this.handleChange('description')} placeholder='* description' />
