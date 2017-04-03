@@ -9,6 +9,21 @@ import {API_URL, PLACE_TYPES, PLACE_TYPES_TO_URLS} from '../constants';
 import {withRouter} from 'react-router-dom';
 import lodash from 'lodash';
 
+class AddressForm extends React.Component {
+  render(){
+    return (
+      <div>
+        <FieldGroup className="col-lg-6" id='address-1' bsSize="lg" type='text' placeholder='* Address Line 1' />
+        <FieldGroup className="col-lg-6" id='address-2' bsSize="lg" type='text' placeholder='Address Line 2' />
+        <FieldGroup className="col-lg-6" id='city' bsSize="lg" type='text' placeholder='* City' />
+        <FieldGroup className="col-lg-6" id='state' bsSize="lg" type='text' placeholder='* State' />
+        <FieldGroup className="col-lg-6" id='zipcode' bsSize="lg" type='text' placeholder='* Zipcode' />
+        <FieldGroup className="col-lg-6" id='country' bsSize="lg" type='text' placeholder='* Country' />
+      </div>
+    );
+  }
+}
+
 class AddPlaceForm extends React.Component {
   constructor(props){
     super(props);
@@ -101,7 +116,7 @@ class AddPlaceForm extends React.Component {
           <Select.Async name="form-field-name" value={this.state.name} onChange={this.handleName} loadOptions={lodash.debounce(this.handleMapQuery, 300)} />
         </div>
         <div className="row">
-          <FieldGroup className="col-lg-6" id='place-address' bsSize="lg" type='text' value={this.state.address} onChange={this.handleChange('address')} placeholder='* Address' />
+          <AddressForm />
         </div>
         <div className="row">
           <FieldGroup className="col-lg-6" id='place-description' bsSize="lg" type='text' value={this.state.description} onChange={this.handleChange('description')} placeholder='* description' />
