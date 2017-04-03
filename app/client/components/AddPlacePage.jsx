@@ -2,9 +2,12 @@ import React from 'react';
 import FieldGroup from './FieldGroup';
 import styles from '../css/AddPlacePage.css';
 import {Button, FormGroup, FormControl} from 'react-bootstrap';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 import axios from 'axios';
 import {API_URL, PLACE_TYPES, PLACE_TYPES_TO_URLS} from '../constants';
 import {withRouter} from 'react-router-dom';
+import lodash from 'lodash';
 
 class AddPlaceForm extends React.Component {
   constructor(props){
@@ -16,8 +19,11 @@ class AddPlaceForm extends React.Component {
       type: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleName = this.handleName.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
+    this.handleMapQuery = this.handleMapQuery.bind(this);
     this.submit = this.submit.bind(this);
+    this.autoCompleteService = new window.google.maps.places.AutocompleteService;
   }
   handleChange(fieldName){
     return (event) =>{
@@ -30,8 +36,13 @@ class AddPlaceForm extends React.Component {
       this.setState({[fieldName]: event.target.value});
     };
   }
+  handleName(event){
+    //used by react select
+    // const val = event.value.terms[0].value;
+    const val = event.value;
+    this.setState({'name': val});
+  }
   submit(){
-    console.log('called');
     axios.post(`${API_URL}/places`,
       {
         name: this.state.name,
@@ -43,6 +54,34 @@ class AddPlaceForm extends React.Component {
       .then(()=>{
         this.props.history.push(`/t/${PLACE_TYPES_TO_URLS[this.state.type]}`);
       });
+  }
+  handleMapQuery(input, callback){
+    let request = {input};
+    // complete does not work so we have to prevent making further calls
+    if (!input || (this.complete && input.includes(this.lastCompleteInput))){
+      return callback(null, {});
+    }
+    this.autoCompleteService.getPlacePredictions(
+      request,
+      (results, status)=>{
+        let options = results && results.map((res, i)=> {
+          return {
+            value: res.terms[0].value,
+            label: res.description
+          };
+        });
+        const error = !(status in ['OK', 'ZERO_RESULTS']);
+        // complete option does not work https://github.com/JedWatson/react-select/issues/1514
+        this.complete = status === 'ZERO_RESULTS';
+        if (this.complete){
+          this.lastCompleteInput = input;
+        }
+        callback(null, {
+          options,
+          complete: this.complete,
+        });
+      }
+    );
   }
   render(){
     const types = Object.values(PLACE_TYPES);
@@ -59,7 +98,7 @@ class AddPlaceForm extends React.Component {
           </div>
         </div>
         <div className="row">
-          <FieldGroup className="col-lg-6" id='place-name' bsSize="lg" type='text' value={this.state.name} onChange={this.handleChange('name')} placeholder='* Name of the Place' />
+          <Select.Async name="form-field-name" value={this.state.name} onChange={this.handleName} loadOptions={lodash.debounce(this.handleMapQuery, 300)} />
         </div>
         <div className="row">
           <FieldGroup className="col-lg-6" id='place-address' bsSize="lg" type='text' value={this.state.address} onChange={this.handleChange('address')} placeholder='* Address' />
