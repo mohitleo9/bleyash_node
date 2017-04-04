@@ -32,7 +32,7 @@ class AddressForm extends React.Component {
     return (
       <div>
         <FieldGroup value={address.address1} onChange={handleAddress("address1")} className="col-lg-6" id='address-1' bsSize="lg" type='text' placeholder='* Address Line 1' />
-        <FieldGroup value={address.address2} onChange={handleAddress("address2")} className="col-lg-6" id='address-2' bsSize="lg" type='text' placeholder='Address Line 2' />
+        <FieldGroup value={address.neighborhood} onChange={handleAddress("neighborhood")} className="col-lg-6" id='neighborhood' bsSize="lg" type='text' placeholder='Neighbourhood' />
         <FieldGroup value={address.city} onChange={handleAddress("city")} className="col-lg-6" id='city' bsSize="lg" type='text' placeholder='* City' />
         <FieldGroup value={address.state} onChange={handleAddress("state")} className="col-lg-6" id='state' bsSize="lg" type='text' placeholder='* State' />
         <FieldGroup value={address.zipcode} onChange={handleAddress("zipcode")} className="col-lg-6" id='zipcode' bsSize="lg" type='text' placeholder='* Zipcode' />
@@ -49,7 +49,7 @@ class AddPlaceForm extends React.Component {
       name: '',
       address: {
         address1: '',
-        address2: '',
+        neighborhood: '',
         city: '',
         state: '',
         zipcode: '',
@@ -63,6 +63,7 @@ class AddPlaceForm extends React.Component {
     this.handleCountry = this.handleCountry.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.handleAddress = this.handleAddress.bind(this);
+    this.autoFillAddress = this.autoFillAddress.bind(this);
     this.handleMapQuery = lodash.debounce(this.handleMapQuery.bind(this), 300);
     this.submit = this.submit.bind(this);
     this.autoCompleteService = new window.google.maps.places.AutocompleteService;
@@ -106,6 +107,34 @@ class AddPlaceForm extends React.Component {
         this.props.history.push(`/t/${PLACE_TYPES_TO_URLS[this.state.type]}`);
       });
   }
+  parseAddress(addressComponents){
+    const getField = (fields)=> {
+      return _.find(addressComponents, (c)=> lodash.intersection(c.types, fields).length === fields.length );
+    };
+    const getFieldVal = (fields) =>{
+      const val = getField(fields) || '';
+      return val && val.long_name;
+    };
+    // only works for serbia
+    let address = {
+        address1: `${getFieldVal(['street_number'])} ${getFieldVal(['route'])}`,
+        neighborhood: getFieldVal(['sublocality_level_1']),
+        city: getFieldVal(['locality', 'political']),
+        state: '',
+        zipcode: getFieldVal(['postal_code']),
+        country: getFieldVal(['country']),
+      };
+    return address;
+  }
+  autoFillAddress(event, {suggestion}){
+    let placeId = suggestion.result.place_id;
+    // it needs some element which it tires to render data to (usually map)
+    let service = new google.maps.places.PlacesService(document.createElement('div'));
+    service.getDetails({placeId}, (place, status)=>{
+      console.log(place);
+      this.setState({address: this.parseAddress(place.address_components)});
+    });
+  }
   handleMapQuery(input, callback){
     let request = {input};
     // complete does not work so we have to prevent making further calls
@@ -117,7 +146,8 @@ class AddPlaceForm extends React.Component {
       (results, status)=>{
         let suggestions = results && results.map((res, i)=> {
           return {
-            value: res.description
+            value: res.description,
+            result: res
           };
         });
         const error = !(status in ['OK', 'ZERO_RESULTS']);
@@ -149,7 +179,7 @@ class AddPlaceForm extends React.Component {
         </div>
         <div className="row">
           {/* <Select.Async name="form-field-name" value={this.state.name} onChange={this.handleName} loadOptions={lodash.debounce(this.handleMapQuery, 300)} /> */}
-          <AutoSuggest placeholder="* Name of Place" value={this.state.name} onChange={this.handleName} getSuggestions={this.handleMapQuery} />
+          <AutoSuggest placeholder="* Name of Place" onSuggestionSelected={this.autoFillAddress} value={this.state.name} onChange={this.handleName} getSuggestions={this.handleMapQuery} />
         </div>
         <div className="row">
           <AddressForm handleCountry={this.handleCountry} handleAddress={this.handleAddress} address={this.state.address}/>

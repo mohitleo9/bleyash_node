@@ -67,6 +67,7 @@ class AutoSuggest extends React.Component{
         getSuggestionValue={this.getSuggestionValue}
         renderSuggestion={this.renderSuggestion}
         inputProps={inputProps}
+        onSuggestionSelected={this.props.onSuggestionSelected}
       />
     );
   }
