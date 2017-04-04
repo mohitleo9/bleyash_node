@@ -63,7 +63,7 @@ class AddPlaceForm extends React.Component {
     this.handleCountry = this.handleCountry.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.handleAddress = this.handleAddress.bind(this);
-    this.handleMapQuery = this.handleMapQuery.bind(this);
+    this.handleMapQuery = lodash.debounce(this.handleMapQuery.bind(this), 300);
     this.submit = this.submit.bind(this);
     this.autoCompleteService = new window.google.maps.places.AutocompleteService;
   }
