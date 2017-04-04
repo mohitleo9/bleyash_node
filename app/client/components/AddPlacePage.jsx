@@ -8,6 +8,7 @@ import axios from 'axios';
 import {API_URL, PLACE_TYPES, PLACE_TYPES_TO_URLS} from '../constants';
 import {withRouter} from 'react-router-dom';
 import lodash from 'lodash';
+import AutoSuggest from './AutoSuggest';
 
 class AddressForm extends React.Component {
   constructor(props){
@@ -83,11 +84,8 @@ class AddPlaceForm extends React.Component {
       this.setState({[fieldName]: event.target.value});
     };
   }
-  handleName(event){
-    //used by react select
-    // const val = event.value.terms[0].value;
-    const val = event.value;
-    this.setState({'name': val});
+  handleName(event, {newValue}){
+    this.setState({'name': newValue});
   }
   submit(){
     axios.post(`${API_URL}/places`,
@@ -111,10 +109,9 @@ class AddPlaceForm extends React.Component {
     this.autoCompleteService.getPlacePredictions(
       request,
       (results, status)=>{
-        let options = results && results.map((res, i)=> {
+        let suggestions = results && results.map((res, i)=> {
           return {
-            value: res.terms[0].value,
-            label: res.description
+            value: res.description
           };
         });
         const error = !(status in ['OK', 'ZERO_RESULTS']);
@@ -124,7 +121,7 @@ class AddPlaceForm extends React.Component {
           this.lastCompleteInput = input;
         }
         callback(null, {
-          options,
+          suggestions,
           complete: this.complete,
         });
       }
@@ -145,7 +142,8 @@ class AddPlaceForm extends React.Component {
           </div>
         </div>
         <div className="row">
-          <Select.Async name="form-field-name" value={this.state.name} onChange={this.handleName} loadOptions={lodash.debounce(this.handleMapQuery, 300)} />
+          {/* <Select.Async name="form-field-name" value={this.state.name} onChange={this.handleName} loadOptions={lodash.debounce(this.handleMapQuery, 300)} /> */}
+          <AutoSuggest value={this.state.name} onChange={this.handleName} getSuggestions={this.handleMapQuery} />
         </div>
         <div className="row">
           <AddressForm handleAddress={this.handleAddress} address={this.state.address}/>
