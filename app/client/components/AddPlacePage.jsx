@@ -2,8 +2,6 @@ import React from 'react';
 import FieldGroup from './FieldGroup';
 import styles from '../css/AddPlacePage.css';
 import {Button, FormGroup, FormControl} from 'react-bootstrap';
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
 import axios from 'axios';
 import {API_URL, PLACE_TYPES, PLACE_TYPES_TO_URLS} from '../constants';
 import {withRouter} from 'react-router-dom';
@@ -194,7 +192,6 @@ class AddPlaceForm extends React.Component {
           };
         });
         const error = !(status in ['OK', 'ZERO_RESULTS']);
-        // complete option does not work https://github.com/JedWatson/react-select/issues/1514
         this.complete = status === 'ZERO_RESULTS';
         if (this.complete){
           this.lastCompleteInput = input;
