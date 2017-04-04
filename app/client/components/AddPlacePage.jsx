@@ -21,13 +21,13 @@ class AddressForm extends React.Component {
     axios.get(`${API_URL}/countries`)
       .then((res)=>{
         const options = res.data.countries.map((country) => {
-          return {label: country.name, value: country.code};
+          return {value: country.name};
         });
         this.setState({countries: options});
       });
   }
   render(){
-    const {handleAddress, address} = this.props;
+    const {handleAddress, handleCountry, address} = this.props;
 
     return (
       <div>
@@ -36,7 +36,7 @@ class AddressForm extends React.Component {
         <FieldGroup value={address.city} onChange={handleAddress("city")} className="col-lg-6" id='city' bsSize="lg" type='text' placeholder='* City' />
         <FieldGroup value={address.state} onChange={handleAddress("state")} className="col-lg-6" id='state' bsSize="lg" type='text' placeholder='* State' />
         <FieldGroup value={address.zipcode} onChange={handleAddress("zipcode")} className="col-lg-6" id='zipcode' bsSize="lg" type='text' placeholder='* Zipcode' />
-        <Select placeholder="country" value={address.country} options={this.state.countries} onChange={handleAddress('country')} />
+        <AutoSuggest value={address.country} placeholder="* Country" allSuggestions={this.state.countries} onChange={handleCountry} />
       </div>
     );
   }
@@ -60,6 +60,7 @@ class AddPlaceForm extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleName = this.handleName.bind(this);
+    this.handleCountry = this.handleCountry.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.handleAddress = this.handleAddress.bind(this);
     this.handleMapQuery = this.handleMapQuery.bind(this);
@@ -83,6 +84,11 @@ class AddPlaceForm extends React.Component {
     return (event) =>{
       this.setState({[fieldName]: event.target.value});
     };
+  }
+  handleCountry(event, {newValue}){
+    let address = {...this.state.address};
+    address.country = newValue;
+    this.setState({address});
   }
   handleName(event, {newValue}){
     this.setState({'name': newValue});
@@ -143,10 +149,10 @@ class AddPlaceForm extends React.Component {
         </div>
         <div className="row">
           {/* <Select.Async name="form-field-name" value={this.state.name} onChange={this.handleName} loadOptions={lodash.debounce(this.handleMapQuery, 300)} /> */}
-          <AutoSuggest value={this.state.name} onChange={this.handleName} getSuggestions={this.handleMapQuery} />
+          <AutoSuggest placeholder="* Name of Place" value={this.state.name} onChange={this.handleName} getSuggestions={this.handleMapQuery} />
         </div>
         <div className="row">
-          <AddressForm handleAddress={this.handleAddress} address={this.state.address}/>
+          <AddressForm handleCountry={this.handleCountry} handleAddress={this.handleAddress} address={this.state.address}/>
         </div>
         <div className="row">
           <FieldGroup className="col-lg-6" id='place-description' bsSize="lg" type='text' value={this.state.description} onChange={this.handleChange('description')} placeholder='* description' />
