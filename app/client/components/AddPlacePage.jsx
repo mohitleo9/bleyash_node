@@ -9,6 +9,41 @@ import {API_URL, PLACE_TYPES, PLACE_TYPES_TO_URLS} from '../constants';
 import {withRouter} from 'react-router-dom';
 import lodash from 'lodash';
 import AutoSuggest from './AutoSuggest';
+import GoogleMapReact from 'google-map-react';
+
+const AnyReactComponent = ({ src }) =>
+  <div>
+    <img style={{height: '25px', width: '25px'}} src={src} />
+  </div>;
+class GoogleMap extends React.Component{
+  render(){
+    console.log('My props');
+    console.log(this.props);
+    // if (!(this.props.lat && this.props.lng)){
+    //   return null;
+    // }
+    return (
+      <GoogleMapReact
+        center={this.props.center}
+        zoom={this.props.zoom}
+      >
+        <AnyReactComponent src="http://simpleicon.com/wp-content/uploads/beer-64x64.png"
+          lat={this.props.lat}
+          lng={this.props.lng}
+          text={this.props.text}
+        />
+      </GoogleMapReact>
+    );
+  }
+};
+
+GoogleMap.defaultProps = {
+  center: {lat: 44.795, lng: 20.469},
+  zoom: 11,
+  lat: 44.795,
+  lng: 20.469,
+  text: 'asdf',
+};
 
 class AddressForm extends React.Component {
   constructor(props){
@@ -53,7 +88,9 @@ class AddPlaceForm extends React.Component {
         city: '',
         state: '',
         zipcode: '',
-        country: ''
+        country: '',
+        lat: 44.795,
+        lng: 20.469,
       },
       description: '',
       type: ''
@@ -107,7 +144,7 @@ class AddPlaceForm extends React.Component {
         this.props.history.push(`/t/${PLACE_TYPES_TO_URLS[this.state.type]}`);
       });
   }
-  parseAddress(addressComponents){
+  parseAddress(addressComponents, place){
     const getField = (fields)=> {
       return _.find(addressComponents, (c)=> lodash.intersection(c.types, fields).length === fields.length );
     };
@@ -115,15 +152,21 @@ class AddPlaceForm extends React.Component {
       const val = getField(fields) || '';
       return val && val.long_name;
     };
+    console.log('I am ');
+    console.log(place);
+    console.log(place.geometry);
     // only works for serbia
     let address = {
-        address1: `${getFieldVal(['street_number'])} ${getFieldVal(['route'])}`,
-        neighborhood: getFieldVal(['sublocality_level_1']),
-        city: getFieldVal(['locality', 'political']),
-        state: '',
-        zipcode: getFieldVal(['postal_code']),
-        country: getFieldVal(['country']),
-      };
+      address1: `${getFieldVal(['street_number'])} ${getFieldVal(['route'])}`,
+      neighborhood: getFieldVal(['sublocality_level_1']),
+      city: getFieldVal(['locality', 'political']),
+      state: '',
+      zipcode: getFieldVal(['postal_code']),
+      country: getFieldVal(['country']),
+      lat: place.geometry.location.lat(),
+      lng: place.geometry.location.lng(),
+
+    };
     return address;
   }
   autoFillAddress(event, {suggestion}){
@@ -132,7 +175,7 @@ class AddPlaceForm extends React.Component {
     let service = new google.maps.places.PlacesService(document.createElement('div'));
     service.getDetails({placeId}, (place, status)=>{
       console.log(place);
-      this.setState({address: this.parseAddress(place.address_components)});
+      this.setState({address: this.parseAddress(place.address_components, place)});
     });
   }
   handleMapQuery(input, callback){
@@ -165,8 +208,12 @@ class AddPlaceForm extends React.Component {
   }
   render(){
     const types = Object.values(PLACE_TYPES);
+    const {lat, lng} = this.state.address;
     return (
       <form onSubmit={this.submit}>
+        <div style={{height: '300px', width:'50%'}}>
+          <GoogleMap center={{lat, lng}} zoom={11} text="asdf" lat={lat} lng={lng} />
+        </div>
         <div className="row">
           <div className="col-md-8">
             <span className="underline h4">Add a new place &nbsp; </span>
