@@ -1,11 +1,12 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
+import '../../css/GoogleMap.css';
 
 
-const AnyReactComponent = ({ src }) =>
-  <div>
-    <img style={{height: '25px', width: '25px'}} src={src} />
+const Marker = () =>
+  <div className='marker-icon'>;
   </div>;
+
 
 class GoogleMap extends React.Component{
   render(){
@@ -19,7 +20,7 @@ class GoogleMap extends React.Component{
         center={this.props.center}
         zoom={this.props.zoom}
       >
-        <AnyReactComponent src="http://simpleicon.com/wp-content/uploads/beer-64x64.png"
+        <Marker src="http://simpleicon.com/wp-content/uploads/beer-64x64.png"
           lat={this.props.lat}
           lng={this.props.lng}
           text={this.props.text}

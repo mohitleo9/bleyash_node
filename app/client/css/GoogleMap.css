@@ -1,0 +1,7 @@
+.marker-icon {
+  height: 64px;
+  width: 64px;
+  background-size: 64px 64px;
+  background-repeat: no-repeat;
+  background-image: url('../images/beer.png');
+}

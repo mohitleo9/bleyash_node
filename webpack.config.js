@@ -25,6 +25,14 @@ let common = {
         loader: 'file-loader?name=[name].[ext]',
       },
       {
+        test: /\.(jpg|png|svg)$/,
+        loader: 'url-loader',
+        options: {
+          name: '[path][name].[hash].[ext]',
+          limit: 10000,
+        },
+      },
+      {
         test: /\.css$/,
         loader: 'style-loader'
       },
