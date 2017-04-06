@@ -61,6 +61,7 @@ class AddPlaceForm extends React.Component {
       type: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this.fetchLocation = lodash.debounce(this.fetchLocation.bind(this), 1000);
     this.handleName = this.handleName.bind(this);
     this.handleCountry = this.handleCountry.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
@@ -68,7 +69,9 @@ class AddPlaceForm extends React.Component {
     this.autoFillAddress = this.autoFillAddress.bind(this);
     this.handleMapQuery = lodash.debounce(this.handleMapQuery.bind(this), 300);
     this.submit = this.submit.bind(this);
+    this.setAddress = this.setAddress.bind(this);
     this.autoCompleteService = new window.google.maps.places.AutocompleteService;
+    this.geocoder = new google.maps.Geocoder();
   }
   handleChange(fieldName){
     return (event) =>{
@@ -80,7 +83,7 @@ class AddPlaceForm extends React.Component {
     return (event) =>{
       let address = {...this.state.address};
       address[fieldName]= event.target ? event.target.value :event.value;
-      this.setState({address});
+      this.setAddress(address);
     };
   }
   handleSelect(fieldName){
@@ -88,10 +91,41 @@ class AddPlaceForm extends React.Component {
       this.setState({[fieldName]: event.target.value});
     };
   }
+  fetchLocation(address) {
+    // this is only for serbia
+    const getFormattedAddress = (a) =>
+      `${a.address1}, ${a.city} ${a.zipcode}, ${a.country}`;
+
+    this.geocoder.geocode({address: getFormattedAddress(address)}, (results, status) =>{
+      console.log('location is');
+      const location = results[0].geometry.location;
+      console.log(results);
+      store.dispatch(updateLocationAndCenter({
+        lat: location.lat(),
+        lng: location.lng()
+      }));
+    });
+
+
+  }
+  setAddress(address, updateLocation=true){
+    // used for hooks
+    this.setState({address});
+
+    const isComplete = (a, requiredFields=['address1', 'city', 'zipcode', 'country']) =>
+      !lodash.some(requiredFields, (key) => !a[key]);
+
+    console.log('add is');
+    console.log(isComplete(address));
+
+    if (updateLocation && isComplete(address)){
+        this.fetchLocation(address);
+    }
+  }
   handleCountry(event, {newValue}){
     let address = {...this.state.address};
     address.country = newValue;
-    this.setState({address});
+    this.setAddress(address);
   }
   handleName(event, {newValue}){
     this.setState({'name': newValue});
@@ -117,11 +151,9 @@ class AddPlaceForm extends React.Component {
       const val = getField(fields) || '';
       return val && val.long_name;
     };
-    console.log('I am ');
-    console.log(place);
     // only works for serbia
     let address = {
-      address1: `${getFieldVal(['street_number'])} ${getFieldVal(['route'])}`,
+      address1: `${getFieldVal(['route'])} ${getFieldVal(['street_number'])}`,
       neighborhood: getFieldVal(['sublocality_level_1']),
       city: getFieldVal(['locality', 'political']),
       state: '',
@@ -141,7 +173,7 @@ class AddPlaceForm extends React.Component {
     let service = new google.maps.places.PlacesService(document.createElement('div'));
     service.getDetails({placeId}, (place, status)=>{
       console.log(place);
-      this.setState({address: this.parseAddress(place.address_components, place)});
+      this.setAddress(this.parseAddress(place.address_components, place), false);
     });
   }
   handleMapQuery(input, callback){
@@ -174,7 +206,6 @@ class AddPlaceForm extends React.Component {
   }
   render(){
     const types = Object.values(PLACE_TYPES);
-    const {lat, lng} = this.state.address;
     return (
       <form onSubmit={this.submit}>
         <div style={{height: '300px', width:'50%'}}>
