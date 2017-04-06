@@ -146,19 +146,21 @@ class AddPlaceForm extends React.Component {
   }
   handleMapQuery(input, callback){
     let request = {input};
-    // complete does not work so we have to prevent making further calls
+    // set this complete variable to prevent making further calls
     if (!input || (this.complete && input.includes(this.lastCompleteInput))){
-      return callback(null, {});
+      return callback(null, {
+        suggestions: []
+      });
     }
     this.autoCompleteService.getPlacePredictions(
       request,
       (results, status)=>{
-        let suggestions = results && results.map((res, i)=> {
+        let suggestions = results ? results.map((res, i)=> {
           return {
             value: res.description,
             result: res
           };
-        });
+        }) : [];
         const error = !(status in ['OK', 'ZERO_RESULTS']);
         this.complete = status === 'ZERO_RESULTS';
         if (this.complete){
@@ -166,7 +168,6 @@ class AddPlaceForm extends React.Component {
         }
         callback(null, {
           suggestions,
-          complete: this.complete,
         });
       }
     );
