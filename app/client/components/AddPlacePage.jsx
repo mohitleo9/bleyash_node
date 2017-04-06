@@ -96,7 +96,10 @@ class AddPlaceForm extends React.Component {
     const getFormattedAddress = (a) =>
       `${a.address1}, ${a.city} ${a.zipcode}, ${a.country}`;
 
-    this.geocoder.geocode({address: getFormattedAddress(address)}, (results, status) =>{
+    const formattedAddress = getFormattedAddress(address);
+    console.log('the request address is');
+    console.log(formattedAddress);
+    this.geocoder.geocode({address: formattedAddress}, (results, status) =>{
       console.log('location is');
       const location = results[0].geometry.location;
       console.log(results);
@@ -114,9 +117,6 @@ class AddPlaceForm extends React.Component {
 
     const isComplete = (a, requiredFields=['address1', 'city', 'zipcode', 'country']) =>
       !lodash.some(requiredFields, (key) => !a[key]);
-
-    console.log('add is');
-    console.log(isComplete(address));
 
     if (updateLocation && isComplete(address)){
         this.fetchLocation(address);
