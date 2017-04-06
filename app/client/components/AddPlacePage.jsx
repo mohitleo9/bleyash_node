@@ -8,6 +8,8 @@ import {withRouter} from 'react-router-dom';
 import lodash from 'lodash';
 import AutoSuggest from './AutoSuggest';
 import GoogleMap from './GoogleMap';
+import {updateLocationAndCenter} from '../actions/googleMap';
+import store from '../store';
 
 
 class AddressForm extends React.Component {
@@ -54,8 +56,6 @@ class AddPlaceForm extends React.Component {
         state: '',
         zipcode: '',
         country: '',
-        lat: 44.795,
-        lng: 20.469,
       },
       description: '',
       type: ''
@@ -119,7 +119,6 @@ class AddPlaceForm extends React.Component {
     };
     console.log('I am ');
     console.log(place);
-    console.log(place.geometry);
     // only works for serbia
     let address = {
       address1: `${getFieldVal(['street_number'])} ${getFieldVal(['route'])}`,
@@ -128,10 +127,12 @@ class AddPlaceForm extends React.Component {
       state: '',
       zipcode: getFieldVal(['postal_code']),
       country: getFieldVal(['country']),
+    };
+    const location = {
       lat: place.geometry.location.lat(),
       lng: place.geometry.location.lng(),
-
     };
+    store.dispatch(updateLocationAndCenter(location));
     return address;
   }
   autoFillAddress(event, {suggestion}){
@@ -176,7 +177,7 @@ class AddPlaceForm extends React.Component {
     return (
       <form onSubmit={this.submit}>
         <div style={{height: '300px', width:'50%'}}>
-          <GoogleMap center={{lat, lng}} zoom={11} text="asdf" lat={lat} lng={lng} />
+          <GoogleMap />
         </div>
         <div className="row">
           <div className="col-md-8">
