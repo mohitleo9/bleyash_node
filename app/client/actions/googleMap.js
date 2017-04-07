@@ -6,6 +6,13 @@ const updateLocationAndCenter = (location) => {
   };
 };
 
+const updateState = (newState) => {
+  return {
+    type: 'UPDATE_STATE',
+    newState
+  };
+};
+
 const updateLocation = (location) => {
   return {
     type: 'UPDATE_LOCATION',
@@ -20,4 +27,4 @@ const updateCenter = (center) => {
   };
 };
 
-export {updateCenter, updateLocation, updateLocationAndCenter};
+export {updateCenter, updateLocation, updateLocationAndCenter, updateState};
