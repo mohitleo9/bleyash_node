@@ -4,9 +4,9 @@ import googleMapActions from '../../actions/googleMap';
 import { connect } from 'react-redux';
 
 
-const EnableDraggingButton = ({onClick, disabled})=> {
+const EnableDraggingButton = ({onClick, disabled, text})=> {
   return (
-    <Button disabled={disabled} onClick={onClick} bsStyle="primary" bsSize="small">Edit Map</Button>
+    <Button disabled={disabled} onClick={onClick} bsStyle="primary" bsSize="small">{text}</Button>
   );
 };
 

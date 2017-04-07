@@ -208,10 +208,13 @@ class AddPlaceForm extends React.Component {
     const types = Object.values(PLACE_TYPES);
     return (
       <form onSubmit={this.submit}>
-        <div style={{height: '300px', width:'50%'}}>
+        <div className='row' style={{height: '300px', width:'50%'}}>
           <GoogleMap />
         </div>
-          <EnableDraggingButton />
+        <div />
+        <div style={{marginTop: '10px'}}className="row">
+          <EnableDraggingButton text="Correct Marker"/>
+        </div>
         <div className="row">
           <div className="col-md-8">
             <span className="underline h4">Add a new place &nbsp; </span>
