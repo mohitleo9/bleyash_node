@@ -4,6 +4,7 @@ import {NavLink, Link} from 'react-router-dom';
 import store from '../store';
 import {getPlaces} from '../actions/places';
 import {URLS_TO_PLACE_TYPES} from '../constants';
+import {getFormattedAddress} from '../utils';
 
 
 const MainButtonBar = () =>
@@ -28,7 +29,7 @@ const Place = ({name, address, slug, description}) =>
     <div>
       <h3> {name} </h3>
       <div><h2>{description}</h2></div>
-      <div>{address}</div>
+      <div>{getFormattedAddress(address)}</div>
     </div>
   </div>;
 

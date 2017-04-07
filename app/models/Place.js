@@ -8,11 +8,22 @@ const PLACE_TYPES = {
   CLUB: 'club'
 };
 
+const AddressSchema = new Schema({
+  address1: {type: String, required: true, minlength: 2},
+  neighborhood: {type: String, required: true, minlength: 2},
+  city: {type: String, required: true, minlength: 2},
+  state: String,
+  zipcode: {type: String, required: true, minlength: 2},
+  country: {type: String, required: true, minlength: 2},
+  lat: {type: Number, required: true},
+  lng: {type: Number, required: true},
+});
+
 const PlaceSchema   = new Schema({
-  name: { type: String },
-  address: String,
-  description: String,
-  type: { type: String, enum: Object.values(PLACE_TYPES) },
+  name: { type: String, required: true},
+  address: AddressSchema,
+  description: {type: String, required: true},
+  type: { type: String, enum: Object.values(PLACE_TYPES), required: true},
   slug: {
     type: String,
     unique: true,

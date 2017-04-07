@@ -10,6 +10,7 @@ import AutoSuggest from './AutoSuggest';
 import {GoogleMap, EnableDraggingButton} from './GoogleMap';
 import ga from '../actions/googleMap';
 import store from '../store';
+import {getFormattedAddress} from '../utils';
 
 class AddressForm extends React.Component {
   constructor(props){
@@ -91,9 +92,6 @@ class AddPlaceForm extends React.Component {
     };
   }
   fetchLocation(address) {
-    // this is only for serbia
-    const getFormattedAddress = (a) =>
-      `${a.address1}, ${a.city} ${a.zipcode}, ${a.country}`;
 
     const formattedAddress = getFormattedAddress(address);
     console.log('the request address is');
@@ -130,10 +128,12 @@ class AddPlaceForm extends React.Component {
     this.setState({'name': newValue});
   }
   submit(){
+    const {googleMap: {lat, lng}} = store.getState();
+    const address = {...this.state.address, ...{lat, lng}};
     axios.post(`${API_URL}/places`,
       {
         name: this.state.name,
-        address: this.state.address,
+        address: address,
         description: this.state.description,
         type: this.state.type,
       }
