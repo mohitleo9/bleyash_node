@@ -23,6 +23,7 @@ const PlaceSchema   = new Schema({
   name: { type: String, required: true},
   address: AddressSchema,
   description: {type: String, required: true},
+  images: [String],
   type: { type: String, enum: Object.values(PLACE_TYPES), required: true},
   slug: {
     type: String,

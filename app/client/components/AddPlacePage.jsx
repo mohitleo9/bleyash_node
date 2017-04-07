@@ -8,6 +8,7 @@ import {withRouter} from 'react-router-dom';
 import lodash from 'lodash';
 import AutoSuggest from './AutoSuggest';
 import {GoogleMap, EnableDraggingButton} from './GoogleMap';
+import Dropzone from './DropZone';
 import ga from '../actions/googleMap';
 import store from '../store';
 import {getFormattedAddress} from '../utils';
@@ -49,6 +50,7 @@ class AddPlaceForm extends React.Component {
     super(props);
     this.state = {
       name: '',
+      images: [],
       address: {
         address1: '',
         neighborhood: '',
@@ -71,6 +73,7 @@ class AddPlaceForm extends React.Component {
     this.submit = this.submit.bind(this);
     this.setAddress = this.setAddress.bind(this);
     this.autoCompleteService = new window.google.maps.places.AutocompleteService;
+    this.handleImageData = this.handleImageData.bind(this);
     this.geocoder = new google.maps.Geocoder();
   }
   handleChange(fieldName){
@@ -133,6 +136,7 @@ class AddPlaceForm extends React.Component {
     axios.post(`${API_URL}/places`,
       {
         name: this.state.name,
+        images: this.state.images,
         address: address,
         description: this.state.description,
         type: this.state.type,
@@ -203,6 +207,10 @@ class AddPlaceForm extends React.Component {
       }
     );
   }
+  handleImageData(data){
+    // so for now we just need the urls;
+    this.setState({images: [...this.state.images, data.url]});
+  }
   render(){
     const types = Object.values(PLACE_TYPES);
     return (
@@ -213,6 +221,9 @@ class AddPlaceForm extends React.Component {
         <div />
         <div style={{marginTop: '10px'}}className="row">
           <EnableDraggingButton text="Correct Marker"/>
+        </div>
+        <div className="row">
+          <Dropzone handleImageData={this.handleImageData} />
         </div>
         <div className="row">
           <div className="col-md-8">

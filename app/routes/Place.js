@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const Place = require('../models/Place.js');
 
-const PUBLIC_FIELDS = ['name', 'address', 'description', 'slug', 'type'];
+const PUBLIC_FIELDS = ['name', 'address', 'description', 'slug', 'type', 'images'];
 
 const getPlaces = (req, res) => {
   const query = req.query.type ? {type: req.query.type} : null;
