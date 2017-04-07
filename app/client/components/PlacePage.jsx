@@ -2,13 +2,20 @@ import React from 'react';
 import store from '../store';
 import {getPlace} from '../actions/place';
 import { connect } from 'react-redux';
+import {getFormattedAddress} from '../utils';
+import Gallery from 'react-photo-gallery';
 
 class PlacePage extends React.Component{
   componentWillMount(){
     store.dispatch(getPlace(this.props.match.params.slug));
   }
   render() {
-    const place = this.props.place;
+    const {place, images} = this.props;
+    if (!place){
+      return null;
+    }
+    console.log('place is');
+    console.log(place);
     return (
       <div className="container">
         <div className="row">
@@ -17,7 +24,11 @@ class PlacePage extends React.Component{
         <div className="row">
           <h3> {place.name} </h3>
           <h2>{place.description}</h2>
-          <h1>{place.address}</h1>
+          <h1>{getFormattedAddress(place.address)}</h1>
+        </div>
+        cmllllll
+        <div className="row" style={{height: "50%", width: "50%"}}>
+          <Gallery photos={images} />
         </div>
         <div className="row">
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
@@ -32,7 +43,8 @@ class PlacePage extends React.Component{
 
 const mapStateToProps = (state) => {
   return {
-    place: state.place
+    place: state.place,
+    images: state.place && state.place.images.map((image)=>({src: image, height: 100, width: 100})),
   };
 };
 

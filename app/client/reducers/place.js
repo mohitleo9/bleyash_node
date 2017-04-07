@@ -1,4 +1,4 @@
-export default (state = {}, action) => {
+export default (state = null, action) => {
   switch (action.type) {
     case 'GET_PLACE_SUCCESS': {
       return Object.assign({}, state, action.place);
