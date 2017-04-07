@@ -8,9 +8,8 @@ import {withRouter} from 'react-router-dom';
 import lodash from 'lodash';
 import AutoSuggest from './AutoSuggest';
 import {GoogleMap, EnableDraggingButton} from './GoogleMap';
-import {updateLocationAndCenter} from '../actions/googleMap';
+import ga from '../actions/googleMap';
 import store from '../store';
-
 
 class AddressForm extends React.Component {
   constructor(props){
@@ -103,7 +102,7 @@ class AddPlaceForm extends React.Component {
       console.log('location is');
       const location = results[0].geometry.location;
       console.log(results);
-      store.dispatch(updateLocationAndCenter({
+      store.dispatch(ga.updateLocationAndCenter({
         lat: location.lat(),
         lng: location.lng()
       }));
@@ -164,7 +163,7 @@ class AddPlaceForm extends React.Component {
       lat: place.geometry.location.lat(),
       lng: place.geometry.location.lng(),
     };
-    store.dispatch(updateLocationAndCenter(location));
+    store.dispatch(ga.updateLocationAndCenter(location));
     return address;
   }
   autoFillAddress(event, {suggestion}){
