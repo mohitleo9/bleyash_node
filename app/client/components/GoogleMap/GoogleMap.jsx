@@ -58,4 +58,5 @@ const mapStateToProps = ({googleMap}) =>{
   };
 };
 
+
 export default connect(mapStateToProps, mapDispatchToProps)(GoogleMap);

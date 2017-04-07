@@ -1,3 +1,9 @@
 import GoogleMap from './GoogleMap';
+import EnableDraggingButton from './EnableDraggingButton';
 
-export default GoogleMap;
+
+export {
+  GoogleMap,
+  EnableDraggingButton
+};
+

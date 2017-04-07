@@ -5,11 +5,12 @@ const initialStateCreator = () => {
     lat: 44.795,
     lng: 20.469,
     draggable: false,
+    draggingAllowed: false,
   };
 };
 
 // location must have lat and lng
-export default (state = initialStateCreator(), {type, location, center, newState} ) => {
+export default (state = initialStateCreator(), {type, location, center, newState, draggingAllowed} ) => {
   switch (type) {
     case 'UPDATE_LOCATION':
       return {...state, ...location};
@@ -17,6 +18,8 @@ export default (state = initialStateCreator(), {type, location, center, newState
       return {...state, ...{center: center}};
     case 'UPDATE_STATE':
       return {...state, ...newState};
+    case 'UPDATE_DRAGGING':
+      return {...state, ...{draggingAllowed}};
     default:
       return initialStateCreator();
   }

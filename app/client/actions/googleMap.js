@@ -28,7 +28,12 @@ const updateCenter = (center) => {
 };
 
 const handleChildMouseUp = (hoverKey, childProps, mouse) =>
-  (dispatch) => {
+  (dispatch, getState) => {
+    const {googleMap: {draggingAllowed}} = getState();
+
+    if (!draggingAllowed){
+      return;
+    }
     dispatch(updateState({
       draggable: true,
     }));
@@ -36,7 +41,13 @@ const handleChildMouseUp = (hoverKey, childProps, mouse) =>
 
 
 const handleChildMouseDown = (hoverKey, childProps, mouse) =>
-  (dispatch) => {
+  (dispatch, getState) => {
+    const {googleMap: {draggingAllowed}} = getState();
+
+    if (!draggingAllowed){
+      return;
+    }
+
     dispatch(updateState({
       draggable: false,
       lat: mouse.lat,
@@ -46,7 +57,13 @@ const handleChildMouseDown = (hoverKey, childProps, mouse) =>
 
 
 const handleChildMouseMove = (hoverKey, childProps, mouse) =>
-  (dispatch) => {
+  (dispatch, getState) => {
+    const {googleMap: {draggingAllowed}} = getState();
+
+    if (!draggingAllowed){
+      return;
+    }
+
     dispatch(updateState({
       draggable: false,
       lat: mouse.lat,
@@ -54,7 +71,14 @@ const handleChildMouseMove = (hoverKey, childProps, mouse) =>
     }));
   };
 
+const updateDragging = (draggingAllowed) =>
+  ({
+    type: 'UPDATE_DRAGGING',
+    draggingAllowed
+  });
+
 export default {
   updateCenter, updateLocation, updateLocationAndCenter,
   updateState, handleChildMouseUp, handleChildMouseDown, handleChildMouseMove,
+  updateDragging,
 };

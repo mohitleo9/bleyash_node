@@ -7,7 +7,7 @@ import {API_URL, PLACE_TYPES, PLACE_TYPES_TO_URLS} from '../constants';
 import {withRouter} from 'react-router-dom';
 import lodash from 'lodash';
 import AutoSuggest from './AutoSuggest';
-import GoogleMap from './GoogleMap';
+import {GoogleMap, EnableDraggingButton} from './GoogleMap';
 import {updateLocationAndCenter} from '../actions/googleMap';
 import store from '../store';
 
@@ -211,6 +211,7 @@ class AddPlaceForm extends React.Component {
         <div style={{height: '300px', width:'50%'}}>
           <GoogleMap />
         </div>
+          <EnableDraggingButton />
         <div className="row">
           <div className="col-md-8">
             <span className="underline h4">Add a new place &nbsp; </span>
