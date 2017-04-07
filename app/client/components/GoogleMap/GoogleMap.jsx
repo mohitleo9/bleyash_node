@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
-import {updateState} from '../../actions/googleMap';
+import googleMapActions from '../../actions/googleMap';
 import '../../css/GoogleMap.css';
 
 
@@ -34,26 +34,16 @@ class GoogleMap extends React.Component{
 const mapDispatchToProps = (dispatch) => {
   return {
     onChange: ({center, zoom}) => {
-      dispatch(updateState({center, zoom}));
+      dispatch(googleMapActions.updateState({center, zoom}));
     },
     onChildMouseUp: (hoverKey, childProps, mouse) =>{
-      dispatch(updateState({
-        draggable: true,
-      }));
+      dispatch(googleMapActions.handleChildMouseUp(hoverKey, childProps, mouse));
     },
     onChildMouseDown: (hoverKey, childProps, mouse) =>{
-      dispatch(updateState({
-        draggable: false,
-        lat: mouse.lat,
-        lng: mouse.lng
-      }));
+      dispatch(googleMapActions.handleChildMouseDown(hoverKey, childProps, mouse));
     },
     onChildMouseMove: (hoverKey, childProps, mouse) =>{
-      dispatch(updateState({
-        draggable: false,
-        lat: mouse.lat,
-        lng: mouse.lng
-      }));
+      dispatch(googleMapActions.handleChildMouseMove(hoverKey, childProps, mouse));
     },
   };
 };

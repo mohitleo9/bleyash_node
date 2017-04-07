@@ -27,4 +27,34 @@ const updateCenter = (center) => {
   };
 };
 
-export {updateCenter, updateLocation, updateLocationAndCenter, updateState};
+const handleChildMouseUp = (hoverKey, childProps, mouse) =>
+  (dispatch) => {
+    dispatch(updateState({
+      draggable: true,
+    }));
+  };
+
+
+const handleChildMouseDown = (hoverKey, childProps, mouse) =>
+  (dispatch) => {
+    dispatch(updateState({
+      draggable: false,
+      lat: mouse.lat,
+      lng: mouse.lng
+    }));
+  };
+
+
+const handleChildMouseMove = (hoverKey, childProps, mouse) =>
+  (dispatch) => {
+    dispatch(updateState({
+      draggable: false,
+      lat: mouse.lat,
+      lng: mouse.lng
+    }));
+  };
+
+export default {
+  updateCenter, updateLocation, updateLocationAndCenter,
+  updateState, handleChildMouseUp, handleChildMouseDown, handleChildMouseMove,
+};
