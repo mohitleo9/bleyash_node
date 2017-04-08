@@ -1,6 +1,7 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {Search} from './Search';
+import ErrorBar from './ErrorBar';
 
 const NavBar = (props, d, k) => {
   return (
@@ -34,6 +35,7 @@ const NavBar = (props, d, k) => {
         </ul>
       </div>
     </div>
+    <ErrorBar />
   </nav>
   );
 };

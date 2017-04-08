@@ -21,6 +21,6 @@ export default (state = initialStateCreator(), {type, location, center, newState
     case 'UPDATE_DRAGGING':
       return {...state, ...{draggingAllowed}};
     default:
-      return initialStateCreator();
+      return state;
   }
 };
