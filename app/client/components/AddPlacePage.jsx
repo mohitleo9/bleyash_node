@@ -50,6 +50,8 @@ class AddPlaceForm extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      _promises: [],
+      isPromisePending: false,
       name: '',
       images: [],
       address: {
@@ -76,6 +78,7 @@ class AddPlaceForm extends React.Component {
     this.autoCompleteService = new window.google.maps.places.AutocompleteService;
     this.handleImageData = this.handleImageData.bind(this);
     this.geocoder = new google.maps.Geocoder();
+    this.addPendingPromise = this.addPendingPromise.bind(this);
   }
   handleChange(fieldName){
     return (event) =>{
@@ -132,20 +135,24 @@ class AddPlaceForm extends React.Component {
     this.setState({'name': newValue});
   }
   submit(){
-    const {googleMap: {lat, lng}} = store.getState();
-    const address = {...this.state.address, ...{lat, lng}};
-    axios.post(`${API_URL}/places`,
-      {
-        name: this.state.name,
-        images: this.state.images,
-        address: address,
-        description: this.state.description,
-        type: this.state.type,
-      }
-    )
-      .then(()=>{
-        this.props.history.push(`/t/${PLACE_TYPES_TO_URLS[this.state.type]}`);
-      });
+    this.setState({isPromisePending: true});
+    Promise.all(this.state._promises).then(()=>{
+      const {googleMap: {lat, lng}} = store.getState();
+      const address = {...this.state.address, ...{lat, lng}};
+
+      axios.post(`${API_URL}/places`,
+        {
+          name: this.state.name,
+          images: this.state.images,
+          address: address,
+          description: this.state.description,
+          type: this.state.type,
+        })
+        .then(()=>{
+          console.log('completed');
+          this.props.history.push(`/t/${PLACE_TYPES_TO_URLS[this.state.type]}`);
+        });
+    });
   }
   parseAddress(addressComponents, place){
     const getField = (fields)=> {
@@ -212,6 +219,9 @@ class AddPlaceForm extends React.Component {
     // so for now we just need the urls;
     this.setState({images: [...this.state.images, data.url]});
   }
+  addPendingPromise(promise){
+    this.setState({_promises: [...this.state._promises, ...[promise]]});
+  }
   render(){
     const types = Object.values(PLACE_TYPES);
     return (
@@ -224,7 +234,7 @@ class AddPlaceForm extends React.Component {
           <EnableDraggingButton text="Correct Marker"/>
         </div>
         <div className="row">
-          <Dropzone handleImageData={this.handleImageData} />
+          <Dropzone addPendingPromise={this.addPendingPromise} handleImageData={this.handleImageData} />
         </div>
         <div className="row">
           <div className="col-md-8">
@@ -233,7 +243,10 @@ class AddPlaceForm extends React.Component {
             <small style={{color: '#C2C2C2'}}>To fill out the information, just write over words. Required fields are marked with (*)</small>
           </div>
           <div style={{paddingTop: '30px' }} className="col-md-4">
-            <Button bsStyle="primary" type="submit" bsSize="large">Publish this place</Button>
+            <Button bsStyle="primary" disabled={this.state.isPromisePending} type="submit" bsSize="large">
+              {this.state.isPromisePending ? <i className="fa fa-spin fa-spinner" aria-hidden="true" /> : null}
+               &nbsp; Publish this place
+            </Button>
           </div>
         </div>
         <div className="row">

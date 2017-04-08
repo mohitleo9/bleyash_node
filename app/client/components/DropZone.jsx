@@ -13,6 +13,10 @@ class DropzoneComponent extends React.Component{
     this.onDrop = this.onDrop.bind(this);
   }
   onDrop(acceptedFiles, rejectedFiles){
+    acceptedFiles = acceptedFiles.map((file) => {
+      file.isUploaded = false;
+      return file;
+    });
     this.setState({
       files: [...acceptedFiles, ...this.state.files]
     });
@@ -25,17 +29,19 @@ class DropzoneComponent extends React.Component{
     let data = new FormData();
     data.append('file', file);
     data.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-    axios.post(CLOUDINARY_UPLOAD_URL, data)
+    let promise = axios.post(CLOUDINARY_UPLOAD_URL, data)
       .then((res)=> {
-        // update string
+        let files = this.state.files.map((f) => {
+          if (f.url === file.url){
+            f.isUploaded = true;
+          }
+          return f;
+        });
+        this.setState({files});
         this.props.handleImageData(res.data);
         console.log(res);
       });
-    // fetch(CLOUDINARY_UPLOAD_URL, {
-    //   method: "POST",
-    //   body: data
-    // });
-
+    this.props.addPendingPromise(promise);
   }
   render(){
     return (
@@ -53,8 +59,15 @@ class DropzoneComponent extends React.Component{
         </Dropzone>
         {this.state.files.length > 0 ?
             <div>
-              <h2>Uploading {this.state.files.length} files...</h2>
-              {this.state.files.map((file, i) => <Image key={i} width={100} style={{paddingRight: 10}} rounded src={file.preview} /> )}
+              <h2>Files provided</h2>
+              {this.state.files.map((file, i) => {
+                return (
+                  <span key={i}>
+                    <h3> {file.isUploaded ? "Uploaded" : "Uploading..."} </h3>
+                    <Image width={100} style={{paddingRight: 10}} rounded src={file.preview} />
+                  </span>
+                );
+              })}
             </div>
             : null
         }
