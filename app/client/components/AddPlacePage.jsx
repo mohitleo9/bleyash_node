@@ -248,7 +248,8 @@ class AddPlaceForm extends React.Component {
           <FieldGroup required className="col-lg-6" id='place-description' bsSize="lg" type='text' value={this.state.description} onChange={this.handleChange('description')} placeholder='* description' />
         </div>
         <FormGroup controlId="formControlsSelect">
-          <FormControl value={this.state.value} onChange={this.handleSelect('type')} componentClass="select" placeholder="Type">
+
+          <FormControl required value={this.state.value} onChange={this.handleSelect('type')} componentClass="select" placeholder="Type">
             <option value="">Select Type</option>
             {types.map((type) => <option key={type} value={type}>{type.toUpperCase()}</option>)}
           </FormControl>
