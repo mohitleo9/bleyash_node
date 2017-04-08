@@ -34,12 +34,14 @@ class AddressForm extends React.Component {
 
     return (
       <div>
-        <FieldGroup value={address.address1} onChange={handleAddress("address1")} className="col-lg-6" id='address-1' bsSize="lg" type='text' placeholder='* Address Line 1' />
-        <FieldGroup value={address.neighborhood} onChange={handleAddress("neighborhood")} className="col-lg-6" id='neighborhood' bsSize="lg" type='text' placeholder='Neighbourhood' />
-        <FieldGroup value={address.city} onChange={handleAddress("city")} className="col-lg-6" id='city' bsSize="lg" type='text' placeholder='* City' />
-        <FieldGroup value={address.state} onChange={handleAddress("state")} className="col-lg-6" id='state' bsSize="lg" type='text' placeholder='* State' />
-        <FieldGroup value={address.zipcode} onChange={handleAddress("zipcode")} className="col-lg-6" id='zipcode' bsSize="lg" type='text' placeholder='* Zipcode' />
-        <AutoSuggest value={address.country} placeholder="* Country" allSuggestions={this.state.countries} onChange={handleCountry} />
+        <FieldGroup required value={address.address1} onChange={handleAddress("address1")} className="col-lg-6" id='address-1' bsSize="lg" type='text' placeholder='* Address Line 1' />
+        <FieldGroup required value={address.neighborhood} onChange={handleAddress("neighborhood")} className="col-lg-6" id='neighborhood' bsSize="lg" type='text' placeholder='Neighbourhood' />
+        <FieldGroup required value={address.city} onChange={handleAddress("city")} className="col-lg-6" id='city' bsSize="lg" type='text' placeholder='* City' />
+        <FieldGroup required value={address.state} onChange={handleAddress("state")} className="col-lg-6" id='state' bsSize="lg" type='text' placeholder='* State' />
+        <FieldGroup required value={address.zipcode} onChange={handleAddress("zipcode")} className="col-lg-6" id='zipcode' bsSize="lg" type='text' placeholder='* Zipcode' />
+        <FieldGroup required value={address.country}>
+          <AutoSuggest required value={address.country} placeholder="* Country" allSuggestions={this.state.countries} onChange={handleCountry} />
+        </FieldGroup>
       </div>
     );
   }
@@ -236,14 +238,15 @@ class AddPlaceForm extends React.Component {
           </div>
         </div>
         <div className="row">
-          {/* <Select.Async name="form-field-name" value={this.state.name} onChange={this.handleName} loadOptions={lodash.debounce(this.handleMapQuery, 300)} /> */}
-          <AutoSuggest placeholder="* Name of Place" onSuggestionSelected={this.autoFillAddress} value={this.state.name} onChange={this.handleName} getSuggestions={this.handleMapQuery} />
+          <FieldGroup value={this.state.name} required>
+            <AutoSuggest placeholder="* Name of Place" onSuggestionSelected={this.autoFillAddress} value={this.state.name} onChange={this.handleName} getSuggestions={this.handleMapQuery} />
+          </FieldGroup>
         </div>
         <div className="row">
           <AddressForm handleCountry={this.handleCountry} handleAddress={this.handleAddress} address={this.state.address}/>
         </div>
         <div className="row">
-          <FieldGroup className="col-lg-6" id='place-description' bsSize="lg" type='text' value={this.state.description} onChange={this.handleChange('description')} placeholder='* description' />
+          <FieldGroup required className="col-lg-6" id='place-description' bsSize="lg" type='text' value={this.state.description} onChange={this.handleChange('description')} placeholder='* description' />
         </div>
         <FormGroup controlId="formControlsSelect">
           <FormControl value={this.state.value} onChange={this.handleSelect('type')} componentClass="select" placeholder="Type">
