@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
 import googleMapActions from '../../actions/googleMap';
-import '../../css/GoogleMap.css';
+import '../../assets/css/GoogleMap.css';
 
 
 const Marker = () =>

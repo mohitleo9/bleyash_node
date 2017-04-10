@@ -1,7 +1,7 @@
 import React from 'react';
 import AutoSuggestBase from 'react-autosuggest';
 import lodash from 'lodash';
-import '../css/AutoSuggestion.css';
+import '../assets/css/AutoSuggestion.css';
 
 class AutoSuggest extends React.Component{
   constructor(props){

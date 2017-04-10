@@ -11,6 +11,7 @@ let common = {
   ],
   output: {
     path: path.resolve(__dirname, './app/build/static'),
+    publicPath: 'static/',
     filename: 'app.bundle.js',
   },
   resolve: {
@@ -20,13 +21,13 @@ let common = {
   module: {
     loaders: [
       {
-        test: /\.(jpg|png|svg)$/,
+        test: /\.(jpg|png|svg|eot|woff2|woff|ttf)$/,
         loader: 'url-loader',
         options: {
           name: '[path][name].[hash].[ext]',
           limit: 10000,
         },
-        include: [path.resolve(__dirname, 'app/client/images')]
+        include: [path.resolve(__dirname, 'app/client/assets/')]
       },
       {
         test: /\.css$/,
@@ -34,7 +35,7 @@ let common = {
           { loader: "style-loader" },
           { loader: "css-loader" },
         ],
-        include: [path.resolve(__dirname, 'app/client/css')]
+        include: [path.resolve(__dirname, 'app/client/assets')]
       },
       {
         test: /\.jsx?$/,

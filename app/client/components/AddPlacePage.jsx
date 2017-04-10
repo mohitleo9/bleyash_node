@@ -1,6 +1,6 @@
 import React from 'react';
 import FieldGroup from './FieldGroup';
-import styles from '../css/AddPlacePage.css';
+import styles from '../assets/css/AddPlacePage.css';
 import {Button, FormGroup, FormControl} from 'react-bootstrap';
 import axios from 'axios';
 import {API_URL, PLACE_TYPES, PLACE_TYPES_TO_URLS} from '../constants';
