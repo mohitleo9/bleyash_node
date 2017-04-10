@@ -19,11 +19,6 @@ let common = {
   devtool: 'source-map',
   module: {
     loaders: [
-      // this is so that the html file can be reloaded on change
-      {
-        test: /\.html$/,
-        loader: 'file-loader?name=[name].[ext]',
-      },
       {
         test: /\.(jpg|png|svg)$/,
         loader: 'url-loader',
@@ -31,23 +26,21 @@ let common = {
           name: '[path][name].[hash].[ext]',
           limit: 10000,
         },
+        include: [path.resolve(__dirname, 'app/client/images')]
       },
       {
         test: /\.css$/,
-        loader: 'style-loader'
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" },
+        ],
+        include: [path.resolve(__dirname, 'app/client/css')]
       },
       {
-        test: /\.css$/,
-        loader: 'css-loader',
-        // query: {
-        //   modules: true,
-        //   localIdentName: '[name]__[local]___[hash:base64:5]'
-        // },
-      },
-      {
-          test: /\.jsx?$/,
-          exclude: /node_modules/,
-          loader: 'babel-loader',
+        test: /\.jsx?$/,
+        include: [path.resolve(__dirname, 'app/client')],
+        exclude: /node_modules/,
+        loader: 'babel-loader',
       },
     ],
       },
