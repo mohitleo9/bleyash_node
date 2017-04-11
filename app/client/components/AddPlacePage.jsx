@@ -12,6 +12,7 @@ import Dropzone from './DropZone';
 import ga from '../actions/googleMap';
 import store from '../store';
 import {getFormattedAddress} from '../utils';
+import { Grid, Row, Col } from 'react-flexbox-grid';
 
 class AddressForm extends React.Component {
   constructor(props){
@@ -226,47 +227,86 @@ class AddPlaceForm extends React.Component {
     const types = Object.values(PLACE_TYPES);
     return (
       <form onSubmit={this.submit}>
-        <div className='row' style={{height: '300px', width:'50%'}}>
-          <GoogleMap />
-        </div>
-        <div />
-        <div style={{marginTop: '10px'}}className="row">
-          <EnableDraggingButton text="Correct Marker"/>
-        </div>
-        <div className="row">
-          <Dropzone addPendingPromise={this.addPendingPromise} handleImageData={this.handleImageData} />
-        </div>
-        <div className="row">
-          <div className="col-md-8">
-            <span className="underline h4">Add a new place &nbsp; </span>
-            <br/>
-            <small style={{color: '#C2C2C2'}}>To fill out the information, just write over words. Required fields are marked with (*)</small>
-          </div>
-          <div style={{paddingTop: '30px' }} className="col-md-4">
-            <Button bsStyle="primary" disabled={this.state.isPromisePending} type="submit" bsSize="large">
-              {this.state.isPromisePending ? <i className="fa fa-spin fa-spinner" aria-hidden="true" /> : null}
-               &nbsp; Publish this place
-            </Button>
-          </div>
-        </div>
-        <div className="row">
-          <FieldGroup value={this.state.name} required>
-            <AutoSuggest placeholder="* Name of Place" onSuggestionSelected={this.autoFillAddress} value={this.state.name} onChange={this.handleName} getSuggestions={this.handleMapQuery} />
-          </FieldGroup>
-        </div>
-        <div className="row">
-          <AddressForm handleCountry={this.handleCountry} handleAddress={this.handleAddress} address={this.state.address}/>
-        </div>
-        <div className="row">
-          <FieldGroup required className="col-lg-6" id='place-description' bsSize="lg" type='text' value={this.state.description} onChange={this.handleChange('description')} placeholder='* description' />
-        </div>
-        <FormGroup controlId="formControlsSelect">
+        {/* main container */}
+        <Row>
+          {/* left half of page */}
+          <Col xsOffset={1} xs>
+            {/* name autocomplete */}
+            <Row>
+              <Col>
+                <FieldGroup value={this.state.name} required>
+                  <AutoSuggest placeholder="* Name of Place" onSuggestionSelected={this.autoFillAddress} value={this.state.name} onChange={this.handleName} getSuggestions={this.handleMapQuery} />
+                </FieldGroup>
+              </Col>
+            </Row>
 
-          <FormControl required value={this.state.value} onChange={this.handleSelect('type')} componentClass="select" placeholder="Type">
-            <option value="">Select Type</option>
-            {types.map((type) => <option key={type} value={type}>{type.toUpperCase()}</option>)}
-          </FormControl>
-        </FormGroup>
+            {/* address */}
+            <Row>
+              <Col xs={10}>
+                <AddressForm handleCountry={this.handleCountry} handleAddress={this.handleAddress} address={this.state.address}/>
+              </Col>
+            </Row>
+
+            {/* description */}
+            <Row>
+              <Col>
+                <FieldGroup required className="col-lg-6" id='place-description' bsSize="lg" type='text' value={this.state.description} onChange={this.handleChange('description')} placeholder='* description' />
+              </Col>
+            </Row>
+
+            {/* country */}
+            <Row>
+              <Col>
+                <FormGroup controlId="formControlsSelect">
+                  <FormControl required value={this.state.value} onChange={this.handleSelect('type')} componentClass="select" placeholder="Type">
+                    <option value="">Select Type</option>
+                    {types.map((type) => <option key={type} value={type}>{type.toUpperCase()}</option>)}
+                  </FormControl>
+                </FormGroup>
+              </Col>
+            </Row>
+          </Col>
+
+          {/* right half of page */}
+          <Col xsOffset={1} xs>
+            {/* google map */}
+            <Row center='xs'>
+              <Col xs>
+                <div style={{height: '300px'}}>
+                  <GoogleMap />
+                </div>
+              </Col>
+            </Row>
+
+            {/* drag button */}
+            <Row center='xs'>
+              <Col xs>
+                <EnableDraggingButton text="Correct Marker"/>
+              </Col>
+            </Row>
+
+            {/* dropzone */}
+            <Row center='xs'>
+              <Col xs>
+                <Dropzone addPendingPromise={this.addPendingPromise} handleImageData={this.handleImageData} />
+              </Col>
+            </Row>
+          </Col>
+
+        </Row>
+        {/* <div className="row"> */}
+        {/*   <div className="col-md-8"> */}
+        {/*     <span className="underline h4">Add a new place &nbsp; </span> */}
+        {/*     <br/> */}
+        {/*     <small style={{color: '#C2C2C2'}}>To fill out the information, just write over words. Required fields are marked with (*)</small> */}
+        {/*   </div> */}
+        {/*   <div style={{paddingTop: '30px' }} className="col-md-4"> */}
+        {/*     <Button bsStyle="primary" disabled={this.state.isPromisePending} type="submit" bsSize="large"> */}
+        {/*       {this.state.isPromisePending ? <i className="fa fa-spin fa-spinner" aria-hidden="true" /> : null} */}
+        {/*        &nbsp; Publish this place */}
+        {/*     </Button> */}
+        {/*   </div> */}
+        {/* </div> */}
       </form>
     );
   }
@@ -274,8 +314,8 @@ class AddPlaceForm extends React.Component {
 const AddPlaceFormWithRouter = withRouter(AddPlaceForm);
 
 const AddPlacePage = () =>
-  <div className="container">
+  <Grid fluid>
     <AddPlaceFormWithRouter />
-  </div>;
+  </Grid>;
 
 export default AddPlacePage;

@@ -35,7 +35,10 @@ let common = {
           { loader: "style-loader" },
           { loader: "css-loader" },
         ],
-        include: [path.resolve(__dirname, 'app/client/assets')]
+        include: [
+          path.resolve(__dirname, 'app/client/assets'),
+          /flexbox/,
+        ]
       },
       {
         test: /\.jsx?$/,
