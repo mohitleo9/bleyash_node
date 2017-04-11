@@ -238,6 +238,11 @@ class AddPlaceForm extends React.Component {
         <Row>
           {/* left half of page */}
           <Col xsOffset={1} xs>
+            <Row>
+              <Col xs>
+                <legend> Add New Place </legend>
+              </Col>
+            </Row>
             {/* name autocomplete */}
             <Row>
               <Col xs>
