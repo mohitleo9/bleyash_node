@@ -14,6 +14,7 @@ import store from '../store';
 import {getFormattedAddress} from '../utils';
 import Rating  from 'react-rating';
 import { Grid, Row, Col } from 'react-flexbox-grid';
+import WorkingHours from './WorkingHours.jsx';
 
 
 class AddressForm extends React.Component {
@@ -309,14 +310,23 @@ class AddPlaceForm extends React.Component {
               </Col>
             </Row>
 
+            {/* price range */}
             <Row>
-              <Col xs={12} md={2} style={{display: 'flex', alignItems: 'center'}}>
-                Price Range
-              </Col>
-              <Col xs className='input-lg'>
-                <Rating stop={4} />
+              <Col xs>
+                <Row>
+                  <Col xs={12} md={2} style={{display: 'flex', alignItems: 'center'}}>
+                    Price Range
+                  </Col>
+                  <Col xs className='input-lg'>
+                    <Rating stop={4} />
+                  </Col>
+                </Row>
               </Col>
             </Row>
+
+            {/* working hours  */}
+            {/* it's already wrapped in row>col */}
+            <WorkingHours />
 
           </Col>
 
