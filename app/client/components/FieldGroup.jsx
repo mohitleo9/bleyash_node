@@ -40,10 +40,10 @@ class FieldGroup extends React.Component{
           this.props.children
           :(
             <Row>
-              <Col xs={2} style={{display: 'flex', alignItems: 'center'}}>
+              <Col xs={12} md={2} style={{display: 'flex', alignItems: 'center'}}>
                 <ControlLabel>{label}</ControlLabel>
               </Col>
-              <Col xs>
+              <Col xs md>
                 <FormControl {...props} />
               </Col>
               {help && <HelpBlock>{help}</HelpBlock>}

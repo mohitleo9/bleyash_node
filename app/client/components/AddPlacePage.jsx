@@ -41,10 +41,10 @@ class AddressForm extends React.Component {
         <FieldGroup required label="Zipcode" value={address.zipcode} onChange={handleAddress("zipcode")} className="" id='zipcode' bsSize="lg" type='text' placeholder='* Zipcode' />
         <FieldGroup required value={address.country}>
           <Row>
-            <Col xs={2} style={{display: 'flex', alignItems: 'center'}}>
+            <Col xs={12} md={2} style={{display: 'flex', alignItems: 'center'}}>
               <ControlLabel> Country </ControlLabel>
             </Col>
-            <Col xs>
+            <Col xs md>
               <AutoSuggest required value={address.country} placeholder="* Country" allSuggestions={this.state.countries} onChange={handleCountry} />
             </Col>
           </Row>
@@ -243,10 +243,10 @@ class AddPlaceForm extends React.Component {
               <Col xs>
                 <FieldGroup value={this.state.name} required>
                   <Row>
-                    <Col xs={2} style={{display: 'flex', alignItems: 'center'}}>
+                    <Col xs={12} md={2} style={{display: 'flex', alignItems: 'center'}}>
                       <ControlLabel> Name </ControlLabel>
                     </Col>
-                    <Col xs>
+                    <Col xs md >
                       <AutoSuggest placeholder="* Name of Place" onSuggestionSelected={this.autoFillAddress} value={this.state.name} onChange={this.handleName} getSuggestions={this.handleMapQuery} />
                     </Col>
                   </Row>
@@ -271,7 +271,7 @@ class AddPlaceForm extends React.Component {
               <Col xs>
                 <FormGroup controlId="formControlsSelect">
                   <Row>
-                    <Col xs={2} style={{display: 'flex', alignItems: 'center'}}>
+                    <Col xs={12} md={2} style={{display: 'flex', alignItems: 'center'}}>
                       <ControlLabel>Type of Bar</ControlLabel>
                     </Col>
                     <Col xs>
