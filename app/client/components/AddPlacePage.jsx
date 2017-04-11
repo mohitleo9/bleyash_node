@@ -12,7 +12,9 @@ import Dropzone from './DropZone';
 import ga from '../actions/googleMap';
 import store from '../store';
 import {getFormattedAddress} from '../utils';
+import Rating  from 'react-rating';
 import { Grid, Row, Col } from 'react-flexbox-grid';
+
 
 class AddressForm extends React.Component {
   constructor(props){
@@ -71,7 +73,9 @@ class AddPlaceForm extends React.Component {
         country: '',
       },
       description: '',
-      type: ''
+      type: '',
+      phone: '',
+      website: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.fetchLocation = lodash.debounce(this.fetchLocation.bind(this), 1000);
@@ -264,14 +268,29 @@ class AddPlaceForm extends React.Component {
               <AddressForm handleCountry={this.handleCountry} handleAddress={this.handleAddress} address={this.state.address}/>
             </Row>
 
-            {/* description */}
+
+            {/* Phone */}
             <Row>
+              <Col xs>
+                <FieldGroup label="Phone" required id='place-phone' bsSize="lg" type='text' value={this.state.phone} onChange={this.handleChange('phone')} placeholder='* phone' />
+              </Col>
+            </Row>
+
+            {/* Website */}
+            <Row>
+              <Col xs>
+                <FieldGroup label="Website" required id='place-website' bsSize="lg" type='text' value={this.state.website} onChange={this.handleChange('website')} placeholder='* website' />
+              </Col>
+            </Row>
+
+            {/* description */}
+            <Row style={{paddingBottom: 50}}>
               <Col xs>
                 <FieldGroup label="Description" required id='place-description' bsSize="lg" type='text' value={this.state.description} onChange={this.handleChange('description')} placeholder='* description' />
               </Col>
             </Row>
 
-            {/* country */}
+            {/* Type of Bar */}
             <Row>
               <Col xs>
                 <FormGroup controlId="formControlsSelect">
@@ -289,6 +308,16 @@ class AddPlaceForm extends React.Component {
                 </FormGroup>
               </Col>
             </Row>
+
+            <Row>
+              <Col xs={12} md={2} style={{display: 'flex', alignItems: 'center'}}>
+                Price Range
+              </Col>
+              <Col xs className='input-lg'>
+                <Rating stop={4} />
+              </Col>
+            </Row>
+
           </Col>
 
           {/* right half of page */}
