@@ -1,7 +1,7 @@
 import React from 'react';
 import FieldGroup from './FieldGroup';
 import styles from '../assets/css/AddPlacePage.css';
-import {Button, FormGroup, FormControl} from 'react-bootstrap';
+import {Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
 import axios from 'axios';
 import {API_URL, PLACE_TYPES, PLACE_TYPES_TO_URLS} from '../constants';
 import {withRouter} from 'react-router-dom';
@@ -34,15 +34,22 @@ class AddressForm extends React.Component {
     const {handleAddress, handleCountry, address} = this.props;
 
     return (
-      <div>
-        <FieldGroup required value={address.address1} onChange={handleAddress("address1")} className="" id='address-1' bsSize="lg" type='text' placeholder='* Address Line 1' />
-        <FieldGroup required value={address.neighborhood} onChange={handleAddress("neighborhood")} className="" id='neighborhood' bsSize="lg" type='text' placeholder='Neighbourhood' />
-        <FieldGroup required value={address.city} onChange={handleAddress("city")} className="" id='city' bsSize="lg" type='text' placeholder='* City' />
-        <FieldGroup required value={address.zipcode} onChange={handleAddress("zipcode")} className="" id='zipcode' bsSize="lg" type='text' placeholder='* Zipcode' />
+      <Col xs>
+        <FieldGroup required label='Address' value={address.address1} onChange={handleAddress("address1")} className="" id='address-1' bsSize="lg" type='text' placeholder='* Address Line 1' />
+        <FieldGroup required label="Neighbourhood" value={address.neighborhood} onChange={handleAddress("neighborhood")} className="" id='neighborhood' bsSize="lg" type='text' placeholder='Neighbourhood' />
+        <FieldGroup required label="City" value={address.city} onChange={handleAddress("city")} className="" id='city' bsSize="lg" type='text' placeholder='* City' />
+        <FieldGroup required label="Zipcode" value={address.zipcode} onChange={handleAddress("zipcode")} className="" id='zipcode' bsSize="lg" type='text' placeholder='* Zipcode' />
         <FieldGroup required value={address.country}>
-          <AutoSuggest required value={address.country} placeholder="* Country" allSuggestions={this.state.countries} onChange={handleCountry} />
+          <Row>
+            <Col xs={2} style={{display: 'flex', alignItems: 'center'}}>
+              <ControlLabel> Country </ControlLabel>
+            </Col>
+            <Col xs>
+              <AutoSuggest required value={address.country} placeholder="* Country" allSuggestions={this.state.countries} onChange={handleCountry} />
+            </Col>
+          </Row>
         </FieldGroup>
-      </div>
+      </Col>
     );
   }
 }
@@ -233,35 +240,47 @@ class AddPlaceForm extends React.Component {
           <Col xsOffset={1} xs>
             {/* name autocomplete */}
             <Row>
-              <Col>
+              <Col xs>
                 <FieldGroup value={this.state.name} required>
-                  <AutoSuggest placeholder="* Name of Place" onSuggestionSelected={this.autoFillAddress} value={this.state.name} onChange={this.handleName} getSuggestions={this.handleMapQuery} />
+                  <Row>
+                    <Col xs={2} style={{display: 'flex', alignItems: 'center'}}>
+                      <ControlLabel> Name </ControlLabel>
+                    </Col>
+                    <Col xs>
+                      <AutoSuggest placeholder="* Name of Place" onSuggestionSelected={this.autoFillAddress} value={this.state.name} onChange={this.handleName} getSuggestions={this.handleMapQuery} />
+                    </Col>
+                  </Row>
                 </FieldGroup>
               </Col>
             </Row>
 
             {/* address */}
             <Row>
-              <Col xs={10}>
-                <AddressForm handleCountry={this.handleCountry} handleAddress={this.handleAddress} address={this.state.address}/>
-              </Col>
+              <AddressForm handleCountry={this.handleCountry} handleAddress={this.handleAddress} address={this.state.address}/>
             </Row>
 
             {/* description */}
             <Row>
-              <Col>
-                <FieldGroup required className="col-lg-6" id='place-description' bsSize="lg" type='text' value={this.state.description} onChange={this.handleChange('description')} placeholder='* description' />
+              <Col xs>
+                <FieldGroup label="Description" required id='place-description' bsSize="lg" type='text' value={this.state.description} onChange={this.handleChange('description')} placeholder='* description' />
               </Col>
             </Row>
 
             {/* country */}
             <Row>
-              <Col>
+              <Col xs>
                 <FormGroup controlId="formControlsSelect">
-                  <FormControl required value={this.state.value} onChange={this.handleSelect('type')} componentClass="select" placeholder="Type">
-                    <option value="">Select Type</option>
-                    {types.map((type) => <option key={type} value={type}>{type.toUpperCase()}</option>)}
-                  </FormControl>
+                  <Row>
+                    <Col xs={2} style={{display: 'flex', alignItems: 'center'}}>
+                      <ControlLabel>Type of Bar</ControlLabel>
+                    </Col>
+                    <Col xs>
+                      <FormControl required value={this.state.value} onChange={this.handleSelect('type')} componentClass="select" placeholder="Type">
+                        <option value="">Select Type</option>
+                        {types.map((type) => <option key={type} value={type}>{type.toUpperCase()}</option>)}
+                      </FormControl>
+                    </Col>
+                  </Row>
                 </FormGroup>
               </Col>
             </Row>

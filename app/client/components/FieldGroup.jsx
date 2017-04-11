@@ -1,5 +1,6 @@
 import React from 'react';
 import {FormGroup, ControlLabel, FormControl, HelpBlock} from 'react-bootstrap';
+import {Row, Col} from 'react-flexbox-grid';
 
 class FieldGroup extends React.Component{
   constructor(props){
@@ -38,11 +39,15 @@ class FieldGroup extends React.Component{
         {this.props.children ?
           this.props.children
           :(
-            <div>
-              <ControlLabel>{label}</ControlLabel>
-              <FormControl {...props} />
+            <Row>
+              <Col xs={2} style={{display: 'flex', alignItems: 'center'}}>
+                <ControlLabel>{label}</ControlLabel>
+              </Col>
+              <Col xs>
+                <FormControl {...props} />
+              </Col>
               {help && <HelpBlock>{help}</HelpBlock>}
-            </div>
+            </Row>
           )
         }
       </FormGroup>
