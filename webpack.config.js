@@ -7,6 +7,7 @@ let common = {
   // the first one is dev onli entry
   entry: [
     'babel-polyfill',
+    'react-hot-loader/patch',
     './app/client/app.jsx',
   ],
   output: {

@@ -39,7 +39,7 @@ class AddressForm extends React.Component {
     return (
       <Col xs>
         <FieldGroup required label='Address' value={address.address1} onChange={handleAddress("address1")} className="" id='address-1' bsSize="lg" type='text' placeholder='* Address Line 1' />
-        <FieldGroup required label="Neighbourhood" value={address.neighborhood} onChange={handleAddress("neighborhood")} className="" id='neighborhood' bsSize="lg" type='text' placeholder='Neighbourhood' />
+        <FieldGroup required label="Nighbourhood" value={address.neighborhood} onChange={handleAddress("neighborhood")} className="" id='neighborhood' bsSize="lg" type='text' placeholder='Neighbourhood' />
         <FieldGroup required label="City" value={address.city} onChange={handleAddress("city")} className="" id='city' bsSize="lg" type='text' placeholder='* City' />
         <FieldGroup required label="Zipcode" value={address.zipcode} onChange={handleAddress("zipcode")} className="" id='zipcode' bsSize="lg" type='text' placeholder='* Zipcode' />
         <FieldGroup required value={address.country}>
