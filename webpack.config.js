@@ -58,11 +58,17 @@ let config;
 
 switch(process.env.NODE_ENV) {
   case 'production':
+    // production is taken from https://webpack.js.org/guides/production-build/
     config = merge(
       common,
       {
         plugins: [
-          new UglifyJSPlugin,
+          new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('production')
+          }),
+          new webpack.optimize.UglifyJsPlugin({
+            sourceMap: common.devtool && (common.devtool.indexOf("sourcemap") >= 0 || common.devtool.indexOf("source-map") >= 0)
+          }),
         ]
       }
     );
