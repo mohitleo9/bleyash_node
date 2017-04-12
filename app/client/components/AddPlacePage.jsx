@@ -3,6 +3,7 @@ import FieldGroup from './FieldGroup';
 import styles from '../assets/css/AddPlacePage.css';
 import {Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
 import axios from 'axios';
+import update from 'immutability-helper';
 import {API_URL, PLACE_TYPES, PLACE_TYPES_TO_URLS} from '../constants';
 import {withRouter} from 'react-router-dom';
 import lodash from 'lodash';
@@ -77,6 +78,14 @@ class AddPlaceForm extends React.Component {
       type: '',
       phone: '',
       website: '',
+      workingHours: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) =>
+        ({
+          day,
+          openingHour: "",
+          closingHour: "",
+          closed: false,
+        })
+      ),
     };
     this.handleChange = this.handleChange.bind(this);
     this.fetchLocation = lodash.debounce(this.fetchLocation.bind(this), 1000);
@@ -92,6 +101,7 @@ class AddPlaceForm extends React.Component {
     this.handleImageData = this.handleImageData.bind(this);
     this.geocoder = new google.maps.Geocoder();
     this.addPendingPromise = this.addPendingPromise.bind(this);
+    this.handleWorkingHours = this.handleWorkingHours.bind(this);
   }
   handleChange(fieldName){
     return (event) =>{
@@ -104,6 +114,26 @@ class AddPlaceForm extends React.Component {
       let address = {...this.state.address};
       address[fieldName]= event.target ? event.target.value :event.value;
       this.setAddress(address);
+    };
+  }
+  handleWorkingHours(day, fieldName){
+    //helper
+    const getWh = (day, whs) =>
+      whs.find((wh) => wh.day === day);
+
+    return (event)=>{
+      const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+      const index = this.state.workingHours.findIndex((wh)=> wh.day === day);
+      // this follows mongodb like syntax
+      let workingHours = update(this.state.workingHours, {[index]: {[fieldName]: {$set: value}}});
+      // get the updated monday (if monday was updated)
+      const monday = getWh("Monday", workingHours);
+
+      if (day === "Monday" && fieldName !=='closed' && monday.openingHour && monday.closingHour){
+        // let's autofill the rest
+        workingHours = this.state.workingHours.map((wh)=> ({...wh, ...{openingHour: monday.openingHour, closingHour: monday.closingHour}}));
+      }
+      this.setState({workingHours});
     };
   }
   handleSelect(fieldName){
@@ -326,7 +356,7 @@ class AddPlaceForm extends React.Component {
 
             {/* working hours  */}
             {/* it's already wrapped in row>col */}
-            <WorkingHours />
+            <WorkingHours handleWorkingHours={this.handleWorkingHours} workingHours={this.state.workingHours}/>
 
           </Col>
 
