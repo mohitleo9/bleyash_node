@@ -4,6 +4,8 @@ import {Checkbox} from 'react-bootstrap';
 
 import { Row, Col } from 'react-flexbox-grid';
 
+const timeValidator = (time) =>
+  /(1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm])/.test(time);
 
 class WorkingHours extends React.Component{
   render(){
@@ -23,11 +25,11 @@ class WorkingHours extends React.Component{
               </Col>
               <Col xs>
                 <Row>
-                  <Col xs={2}>
-                    <FieldGroup value={openingHour} onChange={this.props.handleWorkingHours(day, 'openingHour')} disabled={closed} type='text' placeholder='opening' />
+                  <Col xs={3}>
+                    <FieldGroup validator={timeValidator} value={openingHour} onChange={this.props.handleWorkingHours(day, 'openingHour')} disabled={closed} type='text' placeholder='hh:mm am/pm' />
                   </Col>
-                  <Col xs={2}>
-                    <FieldGroup value={closingHour} onChange={this.props.handleWorkingHours(day, 'closingHour')} disabled={closed} type='text' placeholder='closing' />
+                  <Col xs={3}>
+                    <FieldGroup validator={timeValidator} value={closingHour} onChange={this.props.handleWorkingHours(day, 'closingHour')} disabled={closed} type='text' placeholder='hh:mm am/pm' />
                   </Col>
                   <Col xs>
                     <Checkbox checked={closed} onChange={this.props.handleWorkingHours(day, 'closed')}>
