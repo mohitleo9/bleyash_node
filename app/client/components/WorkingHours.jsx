@@ -10,7 +10,7 @@ const timeValidator = (time) =>
 class WorkingHours extends React.Component{
   render(){
     return (
-      <Row>
+      <Row style={{paddingBottom: 30}}>
         <Col xs>
           <Row>
             <Col xs={12} md={2} style={{display: 'flex', alignItems: 'center'}}>

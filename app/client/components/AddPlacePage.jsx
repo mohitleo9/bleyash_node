@@ -1,7 +1,7 @@
 import React from 'react';
 import FieldGroup from './FieldGroup';
 import styles from '../assets/css/AddPlacePage.css';
-import {Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
+import {Button, FormGroup, FormControl, ControlLabel, Checkbox} from 'react-bootstrap';
 import axios from 'axios';
 import update from 'immutability-helper';
 import {API_URL, PLACE_TYPES, PLACE_TYPES_TO_URLS} from '../constants';
@@ -363,6 +363,22 @@ class AddPlaceForm extends React.Component {
             {/* working hours  */}
             {/* it's already wrapped in row>col */}
             <WorkingHours handleWorkingHours={this.handleWorkingHours} workingHours={this.state.workingHours}/>
+
+            {/* other attributes */}
+            {['Alcohol', 'Credit Card', 'Wifi', 'A/C', 'Parking', 'Outside Sitting', 'View', 'Live Music'].map((attrName) =>
+              <Row>
+                <Col xs>
+                  <Row>
+                    <Col xs={12} md={2} style={{display: 'flex', alignItems: 'center'}}>
+                      {attrName}
+                    </Col>
+                    <Col xs>
+                      <Checkbox />
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            )}
 
           </Col>
 
