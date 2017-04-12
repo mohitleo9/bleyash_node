@@ -5,7 +5,7 @@ import {Checkbox} from 'react-bootstrap';
 import { Row, Col } from 'react-flexbox-grid';
 
 const timeValidator = (time) =>
-  /(1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm])/.test(time);
+  /(1[0-2]|0[1-9]):([0-5][0-9]) ([AaPp][Mm])/.test(time);
 
 class WorkingHours extends React.Component{
   render(){
