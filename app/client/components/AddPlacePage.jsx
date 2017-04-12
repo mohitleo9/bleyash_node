@@ -18,6 +18,12 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import WorkingHours from './WorkingHours.jsx';
 
 
+const Dollar = () =>
+  <i className="fa fa-usd" style={{color: 'black', fontSize: 30}} aria-hidden="true"></i>;
+
+const EmptyDollar = () =>
+  <i className="fa fa-usd" style={{color: '#ccc', fontSize: 30}} aria-hidden="true"></i>;
+
 class AddressForm extends React.Component {
   constructor(props){
     super(props);
@@ -348,7 +354,7 @@ class AddPlaceForm extends React.Component {
                     Price Range
                   </Col>
                   <Col xs className='input-lg'>
-                    <Rating stop={4} />
+                    <Rating full={<Dollar />} empty={<EmptyDollar />} placeholder={<EmptyDollar />} stop={4} />
                   </Col>
                 </Row>
               </Col>
