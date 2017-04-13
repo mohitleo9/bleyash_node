@@ -1,4 +1,6 @@
 const initialStateCreator = () => {
+  // dragging controls the map
+  // draggingAllowed controls marker
   return {
     center: {lat: 44.795, lng: 20.469},
     zoom: 11,
@@ -10,7 +12,7 @@ const initialStateCreator = () => {
 };
 
 // location must have lat and lng
-export default (state = initialStateCreator(), {type, location, center, newState, draggingAllowed} ) => {
+export default (state = initialStateCreator(), {type, location, center, newState} ) => {
   switch (type) {
     case 'UPDATE_LOCATION':
       return {...state, ...location};
@@ -18,8 +20,8 @@ export default (state = initialStateCreator(), {type, location, center, newState
       return {...state, ...{center: center}};
     case 'UPDATE_STATE':
       return {...state, ...newState};
-    case 'UPDATE_DRAGGING':
-      return {...state, ...{draggingAllowed}};
+    case 'TOGGLE_DRAGGING':
+      return {...state, ...{draggingAllowed: !state.draggingAllowed}};
     default:
       return state;
   }

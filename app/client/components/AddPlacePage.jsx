@@ -452,7 +452,7 @@ class AddPlaceForm extends React.Component {
             </Row>
 
             {/* drag button */}
-            <Row center='xs'>
+            <Row center='xs' style={{paddingBottom: 20}}>
               <Col xs>
                 <EnableDraggingButton text="Correct Marker"/>
               </Col>

@@ -5,9 +5,12 @@ import { connect } from 'react-redux';
 
 
 const EnableDraggingButton = ({onClick, disabled, text})=> {
-  return (
-    <Button disabled={disabled} onClick={onClick} bsStyle="primary" bsSize="small">{text}</Button>
-  );
+  if (disabled){
+    return <small style={{color: '#959595'}}><a onClick={onClick}>Click Here</a> To save the changes to the map</small> ;
+  }
+  else {
+    return <small style={{color: '#959595'}}>*Think this is Wrong <a onClick={onClick}>Click Here</a> To move the marker</small> ;
+  }
 };
 
 const mapStateToProps = ({googleMap}) => ({
@@ -15,7 +18,7 @@ const mapStateToProps = ({googleMap}) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onClick: () => dispatch(googleMapActions.updateDragging(true)),
+  onClick: () => dispatch(googleMapActions.toggleDragging(true)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EnableDraggingButton);

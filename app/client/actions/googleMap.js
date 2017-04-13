@@ -71,14 +71,13 @@ const handleChildMouseMove = (hoverKey, childProps, mouse) =>
     }));
   };
 
-const updateDragging = (draggingAllowed) =>
+const toggleDragging = () =>
   ({
-    type: 'UPDATE_DRAGGING',
-    draggingAllowed
+    type: 'TOGGLE_DRAGGING'
   });
 
 export default {
   updateCenter, updateLocation, updateLocationAndCenter,
   updateState, handleChildMouseUp, handleChildMouseDown, handleChildMouseMove,
-  updateDragging,
+  toggleDragging,
 };
