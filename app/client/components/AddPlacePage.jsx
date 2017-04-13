@@ -13,16 +13,11 @@ import Dropzone from './DropZone';
 import ga from '../actions/googleMap';
 import store from '../store';
 import {getFormattedAddress} from '../utils';
-import Rating  from 'react-rating';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import WorkingHours from './WorkingHours.jsx';
+import PriceRating from './PriceRating';
+import {YES_NO_PLACE_ATTRS, YES_NO_PLACE_ATTRS_DISPLAY_LABELS} from '../../common/commonConstants';
 
-
-const Dollar = () =>
-  <i className="fa fa-usd" style={{color: 'black', fontSize: 30}} aria-hidden="true"></i>;
-
-const EmptyDollar = () =>
-  <i className="fa fa-usd" style={{color: '#ccc', fontSize: 30}} aria-hidden="true"></i>;
 
 class AddressForm extends React.Component {
   constructor(props){
@@ -63,19 +58,6 @@ class AddressForm extends React.Component {
     );
   }
 }
-
-const YES_NO_ATTRS = ['alcohol', 'creditCard', 'wifi', 'ac', 'parking', 'outsideSitting', 'view', 'liveMusic'];
-
-const YES_NO_ATTRS_DISPLAY_LABELS = {
-  alcohol: 'Alcohol',
-  creditCard: 'Credit Card',
-  wifi: 'Wifi',
-  ac: 'A/C',
-  parking: 'Parking',
-  outsideSitting: 'Outside Sitting',
-  view: 'View',
-  liveMusic: 'Live Music',
-};
 
 class AddPlaceForm extends React.Component {
   constructor(props){
@@ -388,7 +370,7 @@ class AddPlaceForm extends React.Component {
                     Price Range
                   </Col>
                   <Col xs className='input-lg'>
-                    <Rating initialRate={this.state.priceRating} onChange={this.handleChange('priceRating')} full={<Dollar />} empty={<EmptyDollar />} placeholder={<EmptyDollar />} stop={4} />
+                    <PriceRating initialRate={this.state.priceRating} onChange={this.handleChange('priceRating')}  />
                   </Col>
                 </Row>
               </Col>
@@ -399,12 +381,12 @@ class AddPlaceForm extends React.Component {
             <WorkingHours handleWorkingHours={this.handleWorkingHours} workingHours={this.state.workingHours}/>
 
             {/* other attributes */}
-            {YES_NO_ATTRS.map((attrName) =>
+            {YES_NO_PLACE_ATTRS.map((attrName) =>
               <Row key={attrName}>
                 <Col xs>
                   <Row>
                     <Col xs={12} md={2} style={{display: 'flex', alignItems: 'center'}}>
-                      {YES_NO_ATTRS_DISPLAY_LABELS[attrName]}
+                      {YES_NO_PLACE_ATTRS_DISPLAY_LABELS[attrName]}
                     </Col>
                     <Col xs>
                       <Checkbox value={this.state[attrName]} onChange={this.handleChange(attrName)}/>

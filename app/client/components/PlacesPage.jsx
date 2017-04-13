@@ -1,14 +1,18 @@
 import React from 'react';
+import {Image} from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { Grid, Row, Col } from 'react-flexbox-grid';
 import {NavLink, Link} from 'react-router-dom';
 import store from '../store';
 import {getPlaces} from '../actions/places';
+import PriceRating from './PriceRating';
 import {URLS_TO_PLACE_TYPES} from '../constants';
 import {getFormattedAddress} from '../utils';
+import {YES_NO_PLACE_ATTRS, YES_NO_PLACE_ATTRS_DISPLAY_LABELS} from '../../common/commonConstants';
 
 
 const MainButtonBar = () =>
-  <div style={{paddingBottom: '100px'}} className="row">
+  <Row style={{paddingBottom: '100px'}}>
     <div className="btn-group btn-group-justified">
       <NavLink to="/t/bars/" activeClassName="active" className="btn btn-default">Bars</NavLink>
       <NavLink to="/t/resturants" className="btn btn-default">Resturants</NavLink>
@@ -16,29 +20,42 @@ const MainButtonBar = () =>
       <NavLink to="/t/pubs" className="btn btn-default">Pubs</NavLink>
       <NavLink to="/t/cafes" className="btn btn-default">Cafes</NavLink>
     </div>
-  </div>;
+  </Row>;
 
 const HelloWorld = ({text}) =>
-  <div className="row">
+  <Row>
     <h1>{text || 'Places Page'}</h1>
-  </div>;
+  </Row>;
 
-const Place = ({name, address, slug, description}) =>
-  <div style={{paddingBottom: '30px'}} className="row">
-    <Link to={`/p/${slug}`}>
-      <img src="http://esq.h-cdn.co/assets/cm/15/06/54d3cdbba4f40_-_esq-01-bar-lgn.jpg" className="img-rounded col-md-4" width="304" height="236" />
-    </Link>
-    <div>
+const Place = ({name, address, slug, description, place, coverImage}) =>
+  <Row>
+    <Col xs={3}>
+      <Link to={`/p/${slug}`}>
+        <Image src={coverImage} rounded responsive />
+      </Link>
+    </Col>
+    <Col>
       <h3> {name} </h3>
-      <div><h2>{description}</h2></div>
-      <div>{getFormattedAddress(address, true)}</div>
-    </div>
-  </div>;
+      <span className="lead">{getFormattedAddress(address, true)}</span>
+      <br/>
+      <span>
+        {YES_NO_PLACE_ATTRS.filter((attr) => place[attr])
+            .map((attr)=> YES_NO_PLACE_ATTRS_DISPLAY_LABELS[attr])
+            .join(', ')
+        }
+      </span>
+      <div> <PriceRating initialRate={place.priceRating} dollarStyle={{fontSize: 10}} readonly/> </div>
+    </Col>
+  </Row>;
 
 const Places = ({places}) =>
-  <div className="container">
+  <div>
     {places.map((place, i) =>
-      <Place name={place.name} slug={place.slug} address={place.address} description={place.description} key={i} />
+      <Place
+        name={place.name} slug={place.slug} address={place.address}
+        description={place.description} place={place} key={i}
+        coverImage={place.images.length ? place.images[0] : "http://esq.h-cdn.co/assets/cm/15/06/54d3cdbba4f40_-_esq-01-bar-lgn.jpg"}
+      />
     )}
   </div>;
 
@@ -62,11 +79,11 @@ class PlacesPage extends React.Component{
   }
   render() {
     return (
-      <div className='container'>
+      <Grid fluid>
         <HelloWorld text={this.props.match.params.typeUrl}/>
         <MainButtonBar  />
         <PlacesContainer />
-      </div>
+      </Grid>
     );
   }
 };
