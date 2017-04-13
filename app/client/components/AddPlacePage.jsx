@@ -220,14 +220,16 @@ class AddPlaceForm extends React.Component {
       const {googleMap: {lat, lng}} = store.getState();
       const address = {...this.state.address, ...{lat, lng}};
 
-      axios.post(`${API_URL}/places`,
-        {
-          name: this.state.name,
-          images: this.state.images,
-          address: address,
-          description: this.state.description,
-          type: this.state.type,
-        })
+      let postData = lodash.pick(this.state, [
+        'name', 'images', 'alcohol', 'priceRating', 'creditCard',
+        'wifi', 'ac', 'parking', 'outsideSitting', 'view',
+        'liveMusic', 'interiorDesign', 'description', 'type',
+        'phone', 'website', 'workingHours',
+      ]);
+
+      postData.address = address;
+
+      axios.post(`${API_URL}/places`, postData)
         .then(()=>{
           console.log('completed');
           this.props.history.push(`/t/${PLACE_TYPES_TO_URLS[this.state.type]}`);
@@ -412,7 +414,7 @@ class AddPlaceForm extends React.Component {
             )}
 
             {/* interior design */}
-            <Row>
+            <Row style={{paddingBottom: 20}}>
               <Col xs>
                 <Row>
                   <Col xs={12} md={2} style={{display: 'flex', alignItems: 'center'}}>
@@ -424,6 +426,15 @@ class AddPlaceForm extends React.Component {
                     </FormControl>
                   </Col>
                 </Row>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col xs>
+                <Button bsStyle="primary" disabled={this.state.isPromisePending} type="submit" bsSize="large">
+                  {this.state.isPromisePending ? <i className="fa fa-spin fa-spinner" aria-hidden="true" /> : null}
+                  &nbsp; Publish this place
+                </Button>
               </Col>
             </Row>
 
@@ -463,10 +474,6 @@ class AddPlaceForm extends React.Component {
         {/*     <small style={{color: '#C2C2C2'}}>To fill out the information, just write over words. Required fields are marked with (*)</small> */}
         {/*   </div> */}
         {/*   <div style={{paddingTop: '30px' }} className="col-md-4"> */}
-        {/*     <Button bsStyle="primary" disabled={this.state.isPromisePending} type="submit" bsSize="large"> */}
-        {/*       {this.state.isPromisePending ? <i className="fa fa-spin fa-spinner" aria-hidden="true" /> : null} */}
-        {/*        &nbsp; Publish this place */}
-        {/*     </Button> */}
         {/*   </div> */}
         {/* </div> */}
       </form>

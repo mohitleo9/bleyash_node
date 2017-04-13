@@ -19,6 +19,13 @@ const AddressSchema = new Schema({
   lng: {type: Number, required: true},
 });
 
+const WorkingHourSchema = new Schema({
+  day: String,
+  openingHour: String,
+  closingHour: String,
+  closed: Boolean,
+});
+
 const PlaceSchema   = new Schema({
   name: { type: String, required: true},
   address: AddressSchema,
@@ -29,7 +36,19 @@ const PlaceSchema   = new Schema({
     type: String,
     unique: true,
     index: true,
-  }
+  },
+  phone: String,
+  website: String,
+  alcohol: Boolean,
+  priceRating: Number,
+  creditCard: Boolean,
+  wifi: Boolean,
+  ac: Boolean,
+  parking: Boolean,
+  outsideSitting: Boolean,
+  liveMusic: Boolean,
+  interiorDesign: String,
+  workingHours: [WorkingHourSchema],
 });
 
 function random(digits=4, min, max){
