@@ -8,7 +8,9 @@ import {getPlaces} from '../actions/places';
 import PriceRating from './PriceRating';
 import {URLS_TO_PLACE_TYPES} from '../constants';
 import {getFormattedAddress} from '../utils';
+import Slider from 'react-slick';
 import {YES_NO_PLACE_ATTRS, YES_NO_PLACE_ATTRS_DISPLAY_LABELS} from '../../common/commonConstants';
+import '../assets/css/PlacesPage.css';
 
 
 const MainButtonBar = () =>
@@ -27,6 +29,12 @@ const HelloWorld = ({text}) =>
     <h1>{text || 'Places Page'}</h1>
   </Row>;
 
+const PrevArrow = ({onClick}) =>
+  <i onClick={onClick} className="fa fa-arrow-left arrow-prev" aria-hidden="true" />;
+
+const NextArrow = ({onClick})=>
+  <i onClick={onClick} className="fa fa-arrow-right arrow-next" aria-hidden="true"></i>;
+
 const Place = ({name, address, slug, description, place, coverImage}) =>
   <Row style={{paddingBottom: 30}}>
     <Col xs={3}>
@@ -34,7 +42,7 @@ const Place = ({name, address, slug, description, place, coverImage}) =>
         <Image src={coverImage} rounded responsive />
       </Link>
     </Col>
-    <Col>
+    <Col xs={5}>
       <h3> {name} </h3>
       <span className="lead">{getFormattedAddress(address, true)}</span>
       <br/>
@@ -45,6 +53,15 @@ const Place = ({name, address, slug, description, place, coverImage}) =>
         }
       </span>
       <div> <PriceRating initialRate={place.priceRating} dollarStyle={{fontSize: 10}} readonly/> </div>
+    </Col>
+    <Col xs={4}>
+      {place.images.length ?
+        <Slider prevArrow={<PrevArrow />} nextArrow={<NextArrow />} infinite slidesToShow={2} focusOnSelect lazyLoad speed={500}>
+            {place.images.map((imageSrc) =>
+              <Image key={imageSrc} src={imageSrc} rounded responsive />
+            )}
+          </Slider>
+      : null}
     </Col>
   </Row>;
 

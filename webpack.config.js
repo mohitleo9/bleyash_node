@@ -22,13 +22,16 @@ let common = {
   module: {
     loaders: [
       {
-        test: /\.(jpg|png|svg|eot|woff2|woff|ttf)$/,
+        test: /\.(jpg|gif|png|svg|eot|woff2|woff|ttf)$/,
         loader: 'url-loader',
         options: {
           name: '[path][name].[hash].[ext]',
           limit: 10000,
         },
-        include: [path.resolve(__dirname, 'app/client/assets/')]
+        include: [
+          path.resolve(__dirname, 'app/client/assets/'),
+          /slick/,
+        ]
       },
       {
         test: /\.css$/,
@@ -39,6 +42,7 @@ let common = {
         include: [
           path.resolve(__dirname, 'app/client/assets'),
           /flexbox/,
+          /slick/,
         ]
       },
       {
