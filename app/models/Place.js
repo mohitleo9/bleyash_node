@@ -1,12 +1,9 @@
 const slugify = require('slugify');
 const mongoose     = require('mongoose');
 const Schema       = mongoose.Schema;
+const commonConstants = require('../common/commonConstants');
 
-const PLACE_TYPES = {
-  BAR: 'bar',
-  RESTURANT: 'resturant',
-  CLUB: 'club'
-};
+const PLACE_TYPES = commonConstants.PLACE_TYPES;
 
 const AddressSchema = new Schema({
   address1: {type: String, required: true, minlength: 2},

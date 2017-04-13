@@ -13,6 +13,8 @@ const MainButtonBar = () =>
       <NavLink to="/t/bars/" activeClassName="active" className="btn btn-default">Bars</NavLink>
       <NavLink to="/t/resturants" className="btn btn-default">Resturants</NavLink>
       <NavLink to="/t/clubs" className="btn btn-default">Clubs</NavLink>
+      <NavLink to="/t/pubs" className="btn btn-default">Pubs</NavLink>
+      <NavLink to="/t/cafes" className="btn btn-default">Cafes</NavLink>
     </div>
   </div>;
 

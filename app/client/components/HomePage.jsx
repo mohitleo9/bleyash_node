@@ -8,6 +8,8 @@ const MainButtonBar = () =>
       <Link to="/t/bars/" className="btn btn-default">Bars</Link>
       <Link to="/t/resturants" className="btn btn-default">Resturants</Link>
       <Link to="/t/clubs" className="btn btn-default">Clubs</Link>
+      <Link to="/t/pubs" className="btn btn-default">Pubs</Link>
+      <Link to="/t/cafes" className="btn btn-default">Cafes</Link>
     </div>
   </div>;
 

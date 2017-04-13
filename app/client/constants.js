@@ -1,17 +1,16 @@
 import lodash from 'lodash';
+import commonConstants from '../common/commonConstants';
 
 const API_URL = '/api';
 
-const PLACE_TYPES = {
-  BAR: 'bar',
-  RESTURANT: 'resturant',
-  CLUB: 'club'
-};
+const PLACE_TYPES = commonConstants.PLACE_TYPES;
 
 const PLACE_TYPES_TO_URLS = {
   [PLACE_TYPES.BAR]: 'bars',
   [PLACE_TYPES.RESTURANT]: 'resturants',
-  [PLACE_TYPES.CLUB]: 'clubs'
+  [PLACE_TYPES.CLUB]: 'clubs',
+  [PLACE_TYPES.CAFE]: 'cafes',
+  [PLACE_TYPES.PUB]: 'pubs',
 };
 
 
