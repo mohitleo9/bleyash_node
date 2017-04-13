@@ -28,7 +28,7 @@ const HelloWorld = ({text}) =>
   </Row>;
 
 const Place = ({name, address, slug, description, place, coverImage}) =>
-  <Row>
+  <Row style={{paddingBottom: 30}}>
     <Col xs={3}>
       <Link to={`/p/${slug}`}>
         <Image src={coverImage} rounded responsive />
