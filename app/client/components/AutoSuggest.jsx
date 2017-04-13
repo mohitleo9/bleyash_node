@@ -45,7 +45,7 @@ class AutoSuggest extends React.Component{
     });
   }
   getSuggestionValue(suggestion){
-    return suggestion.value;
+    return suggestion.label || suggestion.value;
   }
   renderSuggestion(suggestion){
     return (

@@ -283,6 +283,7 @@ class AddPlaceForm extends React.Component {
         let suggestions = results ? results.map((res, i)=> {
           return {
             value: res.description,
+            label: res.structured_formatting.main_text,
             result: res
           };
         }) : [];

@@ -31,7 +31,7 @@ const Place = ({name, address, slug, description}) =>
     <div>
       <h3> {name} </h3>
       <div><h2>{description}</h2></div>
-      <div>{getFormattedAddress(address)}</div>
+      <div>{getFormattedAddress(address, true)}</div>
     </div>
   </div>;
 
