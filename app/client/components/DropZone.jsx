@@ -1,6 +1,6 @@
 const React = require('react');
 const Dropzone = require('react-dropzone');
-const {Button, Image} = require('react-bootstrap');
+const {Button, Thumbnail} = require('react-bootstrap');
 import axios from 'axios';
 import {CLOUDINARY_UPLOAD_URL, CLOUDINARY_UPLOAD_PRESET} from '../constants';
 import { Row, Col } from 'react-flexbox-grid';
@@ -48,36 +48,39 @@ class DropzoneComponent extends React.Component{
     return (
       <Row center='xs'>
         <Col xs>
-          <Dropzone
-            ref={(node) => { this.dropzone = node; }}
-            multiple={true}
-            accept="image/*"
-            style={{
-              height: '300px',
-              borderWidth: '2px',
-              borderStyle: 'dashed',
-              borderRadius: '5px',
-              borderColor: 'rgb(102, 102, 102)'
-            }}
-            onDrop={this.onDrop}>
-            <div style={{padding: 30}}>
-              Upload images here (or click to choose)
-              <br />
-              <span style={{paddingLeft: 40, fontSize: 50}} className="glyphicon glyphicon glyphicon-download" />
-            </div>
-          </Dropzone>
+          <Row>
+            <Col xs>
+              <Dropzone
+                ref={(node) => { this.dropzone = node; }}
+                multiple={true}
+                accept="image/*"
+                style={{
+                  height: '300px',
+                  borderWidth: '2px',
+                  borderStyle: 'dashed',
+                  borderRadius: '5px',
+                  borderColor: 'rgb(102, 102, 102)'
+                }}
+                onDrop={this.onDrop}>
+                <div style={{padding: 30}}>
+                  Upload images here (or click to choose)
+                  <br />
+                  <span style={{paddingLeft: 40, fontSize: 50}} className="glyphicon glyphicon glyphicon-download" />
+                </div>
+              </Dropzone>
+            </Col>
+          </Row>
           {this.state.files.length > 0 ?
-              <div>
-                <h2>Files provided</h2>
+              <Row>
                 {this.state.files.map((file, i) => {
                   return (
-                    <span key={i}>
-                      <h3> {file.isUploaded ? "Uploaded" : "Uploading..."} </h3>
-                      <Image width={100} style={{paddingRight: 10}} rounded src={file.preview} />
-                    </span>
+                    <Col key={i} xs={2}>
+                      {file.isUploaded ? null : "Uploading..."}
+                      <Thumbnail style={{paddingRight: 10}} src={file.preview} />
+                    </Col>
                   );
                 })}
-              </div>
+              </Row>
               : null
           }
         </Col>
