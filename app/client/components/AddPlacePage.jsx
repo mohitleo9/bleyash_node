@@ -64,6 +64,19 @@ class AddressForm extends React.Component {
   }
 }
 
+const YES_NO_ATTRS = ['alcohol', 'creditCard', 'wifi', 'ac', 'parking', 'outsideSitting', 'view', 'liveMusic'];
+
+const YES_NO_ATTRS_DISPLAY_LABELS = {
+  alcohol: 'Alcohol',
+  creditCard: 'Credit Card',
+  wifi: 'Wifi',
+  ac: 'A/C',
+  parking: 'Parking',
+  outsideSitting: 'Outside Sitting',
+  view: 'View',
+  liveMusic: 'Live Music',
+};
+
 class AddPlaceForm extends React.Component {
   constructor(props){
     super(props);
@@ -80,6 +93,16 @@ class AddPlaceForm extends React.Component {
         zipcode: '',
         country: '',
       },
+      alcohol: '',
+      priceRating: 1,
+      creditCard: '',
+      wifi: '',
+      ac: '',
+      parking: '',
+      outsideSitting: '',
+      view: '',
+      liveMusic: '',
+      interiorDesign: '',
       description: '',
       type: '',
       phone: '',
@@ -111,8 +134,16 @@ class AddPlaceForm extends React.Component {
   }
   handleChange(fieldName){
     return (event) =>{
-      // computed value !
-      this.setState({[fieldName]: event.target.value});
+      let value;
+      if (event.target)
+      {
+        value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+      }
+      else {
+        // done by stupid ratings plugin
+        value = event;
+      }
+      this.setState({[fieldName]: value});
     };
   }
   handleAddress(fieldName){
@@ -354,7 +385,7 @@ class AddPlaceForm extends React.Component {
                     Price Range
                   </Col>
                   <Col xs className='input-lg'>
-                    <Rating full={<Dollar />} empty={<EmptyDollar />} placeholder={<EmptyDollar />} stop={4} />
+                    <Rating initialRate={this.state.priceRating} onChange={this.handleChange('priceRating')} full={<Dollar />} empty={<EmptyDollar />} placeholder={<EmptyDollar />} stop={4} />
                   </Col>
                 </Row>
               </Col>
@@ -365,20 +396,36 @@ class AddPlaceForm extends React.Component {
             <WorkingHours handleWorkingHours={this.handleWorkingHours} workingHours={this.state.workingHours}/>
 
             {/* other attributes */}
-            {['Alcohol', 'Credit Card', 'Wifi', 'A/C', 'Parking', 'Outside Sitting', 'View', 'Live Music'].map((attrName) =>
-              <Row>
+            {YES_NO_ATTRS.map((attrName) =>
+              <Row key={attrName}>
                 <Col xs>
                   <Row>
                     <Col xs={12} md={2} style={{display: 'flex', alignItems: 'center'}}>
-                      {attrName}
+                      {YES_NO_ATTRS_DISPLAY_LABELS[attrName]}
                     </Col>
                     <Col xs>
-                      <Checkbox />
+                      <Checkbox value={this.state[attrName]} onChange={this.handleChange(attrName)}/>
                     </Col>
                   </Row>
                 </Col>
               </Row>
             )}
+
+            {/* interior design */}
+            <Row>
+              <Col xs>
+                <Row>
+                  <Col xs={12} md={2} style={{display: 'flex', alignItems: 'center'}}>
+                    Interior Design
+                  </Col>
+                  <Col xs>
+                    <FormControl value={this.state.interiorDesign} onChange={this.handleSelect('interiorDesign')} componentClass="select">
+                      {['rustic', 'modern', 'spooky', 'romantic', 'wooden', 'brunchy'].map((type) => <option key={type} value={type}>{type.toUpperCase()}</option>)}
+                    </FormControl>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
 
           </Col>
 
