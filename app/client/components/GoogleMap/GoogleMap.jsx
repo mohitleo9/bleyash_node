@@ -34,7 +34,8 @@ class GoogleMap extends React.Component{
 const mapDispatchToProps = (dispatch) => {
   return {
     onChange: ({center, zoom}) => {
-      dispatch(googleMapActions.updateState({center, zoom}));
+      // this breaks the placePage map
+      // dispatch(googleMapActions.updateState({center, zoom}));
     },
     onChildMouseUp: (hoverKey, childProps, mouse) =>{
       dispatch(googleMapActions.handleChildMouseUp(hoverKey, childProps, mouse));

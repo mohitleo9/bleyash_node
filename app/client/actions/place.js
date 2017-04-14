@@ -6,9 +6,10 @@ const getPlace = (slug) => {
   return (dispatch) => {
     return fetch(`${API_URL}/places/${slug}`)
       .then((response) => response.json())
-      .then((json) =>
-        dispatch(getPlaceSuccess(json[0]))
-      );
+      .then((json) => {
+        dispatch(getPlaceSuccess(json[0]));
+        return json[0];
+      });
   };
 };
 

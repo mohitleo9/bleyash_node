@@ -8,11 +8,19 @@ import {GoogleMap} from './GoogleMap';
 import PriceRating from './PriceRating';
 import {Image, Thumbnail} from 'react-bootstrap';
 import Slider from './Slider';
+import ga from '../actions/googleMap';
 import {YES_NO_PLACE_ATTRS, YES_NO_PLACE_ATTRS_DISPLAY_LABELS} from '../../common/commonConstants';
 
 class PlacePage extends React.Component{
   componentWillMount(){
-    store.dispatch(getPlace(this.props.match.params.slug));
+    // looks like cheating  but whatever
+    store.dispatch(getPlace(this.props.match.params.slug))
+      .then(({address}) =>{
+        store.dispatch(ga.updateLocationAndCenter({
+          lat: address.lat,
+          lng: address.lng,
+        }));
+      });
   }
   render() {
     const {place, images} = this.props;
@@ -122,28 +130,31 @@ class PlacePage extends React.Component{
 
           {/* right half of the page */}
           <Col xsOffset={1} xs={5}>
-            {/* big picture slider */}
-            <Row style={{paddingTop: 120}}>
-              <Col xs>
-                <Slider infinite slidesToShow={1} focusOnSelect lazyLoad speed={500}>
-                  {place.images.map((imageSrc) =>
-                    <Image key={imageSrc} src={imageSrc} rounded responsive />
-                  )}
-                </Slider>
-              </Col>
-            </Row>
+            {place.images.length ?
+              <div>
+                {/*  big picture slider */}
+                <Row style={{paddingTop: 120}}>
+                  <Col xs>
+                    <Slider infinite slidesToShow={1} focusOnSelect lazyLoad speed={500}>
+                      {place.images.map((imageSrc) =>
+                        <Image key={imageSrc} src={imageSrc} rounded responsive />
+                      )}
+                    </Slider>
+                  </Col>
+                </Row>
 
-            {/* Small preview thumbnails */}
-
-            <Row style={{paddingTop: 120}}>
-              <Col xs>
-                <Slider infinite slidesToShow={3} focusOnSelect lazyLoad speed={500}>
-                  {place.images.map((imageSrc) =>
-                    <Thumbnail key={imageSrc} src={imageSrc}/>
-                  )}
-                </Slider>
-              </Col>
-            </Row>
+                {/* Small preview thumbnails */}
+                <Row style={{paddingTop: 120}}>
+                  <Col xs>
+                    <Slider infinite slidesToShow={3} focusOnSelect lazyLoad speed={500}>
+                      {place.images.map((imageSrc) =>
+                        <Thumbnail key={imageSrc} src={imageSrc}/>
+                      )}
+                    </Slider>
+                  </Col>
+                </Row>
+              </div>
+            : null}
           </Col>
 
         </Row>
