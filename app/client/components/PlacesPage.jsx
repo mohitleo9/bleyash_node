@@ -8,7 +8,7 @@ import {getPlaces} from '../actions/places';
 import PriceRating from './PriceRating';
 import {URLS_TO_PLACE_TYPES} from '../constants';
 import {getFormattedAddress} from '../utils';
-import Slider from 'react-slick';
+import Slider from './Slider';
 import {YES_NO_PLACE_ATTRS, YES_NO_PLACE_ATTRS_DISPLAY_LABELS} from '../../common/commonConstants';
 import '../assets/css/PlacesPage.css';
 
@@ -28,12 +28,6 @@ const HelloWorld = ({text}) =>
   <Row>
     <h1>{text || 'Places Page'}</h1>
   </Row>;
-
-const PrevArrow = ({onClick}) =>
-  <i onClick={onClick} className="fa fa-arrow-left arrow-prev" aria-hidden="true" />;
-
-const NextArrow = ({onClick})=>
-  <i onClick={onClick} className="fa fa-arrow-right arrow-next" aria-hidden="true"></i>;
 
 const Place = ({name, address, slug, description, place, coverImage}) =>
   <Row style={{paddingBottom: 30}}>
@@ -56,11 +50,11 @@ const Place = ({name, address, slug, description, place, coverImage}) =>
     </Col>
     <Col xs={4}>
       {place.images.length ?
-        <Slider prevArrow={<PrevArrow />} nextArrow={<NextArrow />} infinite slidesToShow={2} focusOnSelect lazyLoad speed={500}>
-            {place.images.map((imageSrc) =>
-              <Image key={imageSrc} src={imageSrc} rounded responsive />
-            )}
-          </Slider>
+        <Slider infinite slidesToShow={2} focusOnSelect lazyLoad speed={500}>
+          {place.images.map((imageSrc) =>
+            <Image key={imageSrc} src={imageSrc} rounded responsive />
+          )}
+        </Slider>
       : null}
     </Col>
   </Row>;

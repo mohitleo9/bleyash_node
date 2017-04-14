@@ -14,7 +14,7 @@ import ga from '../actions/googleMap';
 import store from '../store';
 import {getFormattedAddress} from '../utils';
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import WorkingHours from './WorkingHours.jsx';
+import WorkingHours from './WorkingHours';
 import PriceRating from './PriceRating';
 import {YES_NO_PLACE_ATTRS, YES_NO_PLACE_ATTRS_DISPLAY_LABELS} from '../../common/commonConstants';
 

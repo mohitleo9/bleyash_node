@@ -1,0 +1,43 @@
+.slick-arrow.slick-prev{
+  background-color: grey;
+}
+
+
+.slick-arrow.slick-next{
+  background-color: grey;
+}
+
+/* copied from slick css */
+.my-arrow {
+  position: absolute;
+  transform: translate(0, -50%);
+  line-height: 0;
+  top: 50%;
+  height: 20px;
+  width: 20px;
+  padding: 0px;
+  cursor: pointer;
+}
+.arrow-prev{
+  left: -25px;
+  position: absolute;
+  transform: translate(0, -50%);
+  line-height: 0;
+  top: 50%;
+  height: 20px;
+  width: 20px;
+  padding: 0px;
+  cursor: pointer;
+}
+
+.arrow-next{
+  right: -25px;
+  position: absolute;
+  transform: translate(0, -50%);
+  line-height: 0;
+  top: 50%;
+  height: 20px;
+  width: 20px;
+  padding: 0px;
+  cursor: pointer;
+}

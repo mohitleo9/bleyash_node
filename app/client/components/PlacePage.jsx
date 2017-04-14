@@ -2,8 +2,13 @@ import React from 'react';
 import store from '../store';
 import {getPlace} from '../actions/place';
 import { connect } from 'react-redux';
+import { Grid, Row, Col } from 'react-flexbox-grid';
 import {getFormattedAddress} from '../utils';
-import Gallery from 'react-photo-gallery';
+import {GoogleMap} from './GoogleMap';
+import PriceRating from './PriceRating';
+import {Image, Thumbnail} from 'react-bootstrap';
+import Slider from './Slider';
+import {YES_NO_PLACE_ATTRS, YES_NO_PLACE_ATTRS_DISPLAY_LABELS} from '../../common/commonConstants';
 
 class PlacePage extends React.Component{
   componentWillMount(){
@@ -14,29 +19,135 @@ class PlacePage extends React.Component{
     if (!place){
       return null;
     }
-    console.log('place is');
-    console.log(place);
     return (
-      <div className="container">
-        <div className="row">
-          <img src="http://esq.h-cdn.co/assets/cm/15/06/54d3cdbba4f40_-_esq-01-bar-lgn.jpg" className="img-rounded img-responsive center-block"/>
-        </div>
-        <div className="row">
-          <h3> {place.name} </h3>
-          <h2>{place.description}</h2>
-          <h1>{getFormattedAddress(place.address)}</h1>
-        </div>
-        cmllllll
-        <div className="row" style={{height: "50%", width: "50%"}}>
-          <Gallery photos={images} />
-        </div>
-        <div className="row">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-          tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
-          vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-          no sea takimata sanctus est Lorem ipsum dolor sit amet.
-        </div>
-      </div>
+      <Grid fluid>
+        <Row>
+          {/* left half of the page */}
+          <Col xsOffset={1} xs={5}>
+            {/* place info like name etc */}
+            <Row>
+              <Col xs>
+                <h3> {place.name} </h3>
+                <span className="lead">{getFormattedAddress(place.address, true)}</span>
+                <br />
+                <span>{place.phone}</span>
+                <br />
+                <span><a href={place.website}>{place.website}</a></span>
+              </Col>
+            </Row>
+
+            {/* google maps */}
+            <Row>
+              <Col xs>
+                <div style={{height: '300px'}}>
+                  <GoogleMap />
+                </div>
+              </Col>
+            </Row>
+
+            {/* type of place */}
+            <Row>
+              <Col xs>
+                Type: {place.type.toUpperCase()}
+              </Col>
+            </Row>
+
+            {/* price rating */}
+            <Row>
+              <Col xs>
+                <PriceRating
+                  initialRate={place.priceRating}
+                  dollarStyle={{fontSize: 10}} readonly
+                />
+              </Col>
+            </Row>
+
+            {/* Working Hours */}
+            <Row style={{paddingBottom: 30}}>
+              <Col xs>
+                <Row>
+                  <Col xs>
+                    Working Hours:
+                  </Col>
+                </Row>
+
+                {place.workingHours.map(({day, openingHour, closingHour, closed}) =>
+                  <Row key={day}>
+                    <Col xs={12} md={3}>
+                      {day}:
+                    </Col>
+                    <Col xs>
+                      <Row>
+                        <Col xs={4}>
+                          {closed ? 'closed': openingHour} - {closed ? 'closed': closingHour}
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                )}
+              </Col>
+            </Row>
+
+            {/* YES NO ATTRS */}
+
+            { YES_NO_PLACE_ATTRS.map((attrName) =>
+              <Row key={attrName}>
+                <Col xs>
+                  <Row>
+                    <Col xs={12} md={3} style={{display: 'flex', alignItems: 'center'}}>
+                      {YES_NO_PLACE_ATTRS_DISPLAY_LABELS[attrName]}
+                    </Col>
+                    <Col xs>
+                      {place[attrName] ? 'YES': 'No'}
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            )}
+
+            {/* interior design */}
+            <Row style={{paddingBottom: 20}}>
+              <Col xs>
+                <Row>
+                  <Col xs={12} md={3} style={{display: 'flex', alignItems: 'center'}}>
+                    Interior Design
+                  </Col>
+                  <Col xs>
+                    {place.interiorDesign}
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Col>
+
+          {/* right half of the page */}
+          <Col xsOffset={1} xs={5}>
+            {/* big picture slider */}
+            <Row style={{paddingTop: 120}}>
+              <Col xs>
+                <Slider infinite slidesToShow={1} focusOnSelect lazyLoad speed={500}>
+                  {place.images.map((imageSrc) =>
+                    <Image key={imageSrc} src={imageSrc} rounded responsive />
+                  )}
+                </Slider>
+              </Col>
+            </Row>
+
+            {/* Small preview thumbnails */}
+
+            <Row style={{paddingTop: 120}}>
+              <Col xs>
+                <Slider infinite slidesToShow={3} focusOnSelect lazyLoad speed={500}>
+                  {place.images.map((imageSrc) =>
+                    <Thumbnail key={imageSrc} src={imageSrc}/>
+                  )}
+                </Slider>
+              </Col>
+            </Row>
+          </Col>
+
+        </Row>
+      </Grid>
     );
   }
 };
