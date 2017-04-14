@@ -412,7 +412,7 @@ class AddPlaceForm extends React.Component {
               </Col>
             </Row>
 
-            <Row>
+            <Row style={{paddingBottom: 60}}>
               <Col xs>
                 <Button bsStyle="primary" disabled={this.state.isPromisePending} type="submit" bsSize="large">
                   {this.state.isPromisePending ? <i className="fa fa-spin fa-spinner" aria-hidden="true" /> : null}
