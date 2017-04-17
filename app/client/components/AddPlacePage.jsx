@@ -211,12 +211,17 @@ class AddPlaceForm extends React.Component {
 
       postData.address = address;
 
-      axios.post(`${API_URL}/places`, postData)
+      return axios.post(`${API_URL}/places`, postData)
         .then(()=>{
-          console.log('completed');
           this.props.history.push(`/t/${PLACE_TYPES_TO_URLS[this.state.type]}`);
         });
-    });
+    })
+      .catch((reason)=>{
+        console.error(reason);
+        console.log('error');
+      });
+    // this prevents redirect
+    return false;
   }
   parseAddress(addressComponents, place){
     const getField = (fields)=> {
